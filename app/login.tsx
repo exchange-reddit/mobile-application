@@ -1,6 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'; // useRef, useEffect 추가
 import {
+  Animated,
   Dimensions,
   SafeAreaView,
   StatusBar,
@@ -8,7 +9,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 
@@ -16,15 +17,17 @@ import Svg, { Circle, Path } from 'react-native-svg';
 const { width, height } = Dimensions.get('window');
 
 // TODO: 별모양 Svg사용해서 더 예쁘게 만들기
-const StarIcon = ({ size = 8, style }) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" style={style}>
-    <Path
-      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-      fill="white"
-      opacity={0.8}
-    />
-  </Svg>
-);
+const StarIcon = ({ size = 8, style }) => {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" style={style}>
+      <Path
+        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+        fill="white"
+        opacity={0.8}
+      />
+    </Svg>
+  );
+};
 
 // TODO: 원형 선 위치 조정하기
 
@@ -55,10 +58,62 @@ const CircularLines = () => (
     <Circle cx={width * 0.7} cy={320} r="2" fill="white" opacity={0.6} />
   </Svg>
 );
+//29.June Nayeon edited
+const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // Animation values
+  const gradientAnimation = useRef(new Animated.Value(0)).current;
+
+  // Gradient color sets for animation
+  const gradientSets = [
+    ['#020030', '#614798', '#3743AC'],
+    ['#614798', '#3743AC', '#020030'],
+    ['#3743AC', '#020030', '#614798'],
+  ];
+
+  useEffect(() => {
+    // Start the gradient animation
+    const animateGradient = () => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(gradientAnimation, {
+            toValue: 1,
+            duration: 4000,
+            useNativeDriver: false,
+          }),
+          Animated.timing(gradientAnimation, {
+            toValue: 2,
+            duration: 4000,
+            useNativeDriver: false,
+          }),
+          Animated.timing(gradientAnimation, {
+            toValue: 0,
+            duration: 4000,
+            useNativeDriver: false,
+          }),
+        ])
+      ).start();
+    };
+
+    animateGradient();
+  }, []);
+
+  const animatedColors = gradientSets[0].map((_, index) => 
+    gradientAnimation.interpolate({
+      inputRange: [0, 1, 2],
+      outputRange: [
+        gradientSets[0][index],
+        gradientSets[1][index],
+        gradientSets[2][index],
+      ],
+    })
+  );
+
+  //until this
 
   const handleLogin = () => {
     console.log('Login pressed');
@@ -75,8 +130,8 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <LinearGradient
-        colors={['#1a1a2e', '#16213e', '#0f3460']}
+      <AnimatedLinearGradient
+        colors={['#020030', '#614798', '#3743AC']} // background colors
         style={styles.gradient}
       >
         {/* Background decorative elements */}
@@ -140,7 +195,7 @@ export default function LoginScreen() {
 
         {/* Home indicator */}
         <View style={styles.homeIndicator} />
-      </LinearGradient>
+      </AnimatedLinearGradient>
     </SafeAreaView>
   );
 }
@@ -250,4 +305,4 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     opacity: 0.8,
   },
-});
+  });
