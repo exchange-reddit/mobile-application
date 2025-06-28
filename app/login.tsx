@@ -1,19 +1,21 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
-    Dimensions,
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 
+// fetches the device screen width and height for responsive design.
 const { width, height } = Dimensions.get('window');
 
+// TODO: 별모양 Svg사용해서 더 예쁘게 만들기
 const StarIcon = ({ size = 8, style }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" style={style}>
     <Path
@@ -23,6 +25,8 @@ const StarIcon = ({ size = 8, style }) => (
     />
   </Svg>
 );
+
+// TODO: 원형 선 위치 조정하기
 
 const CircularLines = () => (
   <Svg
