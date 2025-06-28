@@ -90,7 +90,7 @@ export default function LoginScreen() {
 
         {/* Status bar info */}
         <View style={styles.statusBar}>
-          <Text style={styles.time}>9:41</Text>
+          <Text style={styles.time}>12:00</Text>
           <View style={styles.statusIcons}>
             <Text style={styles.statusIcon}>📶</Text>
             <Text style={styles.statusIcon}>📶</Text>
