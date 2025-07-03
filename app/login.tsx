@@ -10,13 +10,13 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import Svg, { Circle, Path } from 'react-native-svg';
+import Svg, { Circle, Defs, Path, RadialGradient, Stop } from 'react-native-svg';
 
 
 // fetches the device screen width and height for responsive design.
 const { width, height } = Dimensions.get('window');
 
-// TODO: 별모양 Svg사용해서 더 예쁘게 만들기
+// TODO: 별모양 Svg사용해서 더 예쁘게 만들기 -> 3 July 나연 완료
 const StarIcon = ({ size = 8, style }) => {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" style={style}>
@@ -29,7 +29,7 @@ const StarIcon = ({ size = 8, style }) => {
   );
 };
 
-// TODO: 원형 선 위치 조정하기
+// TODO: 원형 선 위치 조정하기 
 
 const CircularLines = () => (
   <Svg
@@ -38,6 +38,13 @@ const CircularLines = () => (
     style={StyleSheet.absoluteFillObject}
     viewBox={`0 0 ${width} ${height * 0.6}`}
   >
+    <Defs>
+      <RadialGradient id="whiteToTransparent" cx="80%" cy="100%" r="80%">
+        <Stop offset="0%" stopColor="white" stopOpacity="1" />
+        <Stop offset="80%" stopColor="white" stopOpacity="0" />
+      </RadialGradient>
+    </Defs>
+
     {[...Array(6)].map((_, index) => (
       <Circle
         key={index}
@@ -45,10 +52,21 @@ const CircularLines = () => (
         cy={-50}
         r={80 + index * 40}
         fill="none"
-        stroke="rgba(255, 255, 255, 0.1)"
-        strokeWidth="1"
+        stroke="rgba(255, 255, 255, 0.8)"
+        strokeWidth="0.4"
       />
     ))}
+    
+    {/* Gradient circle - 새로 추가된 원 */}
+    <Circle
+      cx={width / 2}
+      cy={-50}
+      r={280}
+      fill="url(#whiteToTransparent)"
+      opacity={0.3}
+    />
+      
+
     {/* Small dots on the circles */}
     <Circle cx={width * 0.2} cy={103} r="2" fill="white" opacity={0.8} />
     <Circle cx={width * 0.8} cy={153} r="2" fill="white" opacity={0.8} />
@@ -56,6 +74,7 @@ const CircularLines = () => (
     <Circle cx={width * 0.85} cy={240} r="2" fill="white" opacity={0.8} />
     <Circle cx={width * 0.3} cy={280} r="2" fill="white" opacity={0.8} />
     <Circle cx={width * 0.7} cy={320} r="2" fill="white" opacity={0.8} />
+    
   </Svg>
 );
 //29.June Nayeon edited
@@ -136,13 +155,15 @@ export default function LoginScreen() {
         colors={['#020030', '#614798', '#3743AC']} // background colors
         style={styles.gradient}
       >
+        <View style={styles.grainOverlay} />
+
         {/* Background decorative elements */}
         <CircularLines />
         
         {/* Stars */}
-        <StarIcon size={12} style={[styles.star, { top: height * 0.25, left: width * 0.15 }]} />
+        <StarIcon size={20} style={[styles.star, { top: height * 0.27, left: width * 0.05 }]} />
         <StarIcon size={8} style={[styles.star, { top: height * 0.45, right: width * 0.1 }]} />
-        <StarIcon size={10} style={[styles.star, { bottom: height * 0.35, left: width * 0.2 }]} />
+        <StarIcon size={15} style={[styles.star, { bottom: height * 0.35, left: width * 0.2 }]} />
         <StarIcon size={6} style={[styles.star, { bottom: height * 0.15, right: width * 0.25 }]} />
 
         {/* Main content */}
@@ -192,6 +213,16 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+
+  grainOverlay: {
+  ...StyleSheet.absoluteFillObject,
+  backgroundColor: 'rgba(0, 0, 0, 0.15)',
+  opacity: 0.8,
+  // 미세한 패턴 효과
+  borderWidth: 0.5,
+  borderColor: 'rgba(0, 0, 0, 0.05)',
+},
+
   container: {
     flex: 1,
   },
@@ -206,44 +237,32 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
-  time: {
-    color: 'white',
-    fontSize: 17,
-    fontWeight: '600',
-  },
-  statusIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  statusIcon: {
-    color: 'white',
-    marginLeft: 5,
-    fontSize: 16,
-  },
   content: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 60,
     paddingHorizontal: 40,
     fontFamily: 'Inter-Medium'
   },
   title: {
     fontSize: 40,
-    fontWeight: '300',
+    fontWeight: '100',
     color: 'white',
     textAlign: 'center',
-    marginBottom: 80,
+    marginTop: 180,
+    marginBottom: -100,
     letterSpacing: -1,
     fontFamily: 'Inter-Bold'
   },
   formContainer: {
-    marginBottom: 60,
+    marginBottom: 0,
   },
   input: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 12,
     paddingHorizontal: 20,
     paddingVertical: 18,
-    marginBottom: 16,
+    marginBottom: 19,
     fontSize: 16,
     color: 'white',
     borderWidth: 1,
