@@ -1,4 +1,6 @@
+import BUTTONS from '@/constants/Button';
 import FONTS from '@/constants/Font';
+import INPUTS from '@/constants/Input';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react'; // useRef, useEffect 추가
 import {
@@ -172,7 +174,7 @@ export default function LoginScreen() {
           
           <View style={styles.formContainer}>
             <TextInput
-              style={[FONTS.inputFont, styles.input]}
+              style={[FONTS.inputFont, INPUTS.oneLineInput, styles.input]}
               placeholder="Enter your email"
               placeholderTextColor="rgba(255, 255, 255, 0.7)"
               value={email}
@@ -182,7 +184,7 @@ export default function LoginScreen() {
             />
             
             <TextInput
-              style={[FONTS.inputFont, styles.input]}
+              style={[FONTS.inputFont, INPUTS.oneLineInput, styles.input]}
               placeholder="Enter your password"
               placeholderTextColor="rgba(255, 255, 255, 0.7)"
               value={password}
@@ -190,13 +192,13 @@ export default function LoginScreen() {
               secureTextEntry
             />
             
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <TouchableOpacity style={[BUTTONS.bigButton, styles.loginButton]} onPress={handleLogin}>
               <Text style={[FONTS.buttonFont]}>LOGIN</Text>
             </TouchableOpacity>
           </View>
           
           <View style={styles.bottomSection}>
-            <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+            <TouchableOpacity style={[BUTTONS.bigButton, styles.registerButton]} onPress={handleRegister}>
               <Text style={[FONTS.buttonFont]}>REGISTER</Text>
             </TouchableOpacity>
             
@@ -236,7 +238,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 60,
     paddingHorizontal: 40,
-    fontFamily: 'Inter-Medium'
   },
   title: {
     textAlign: 'center',
@@ -247,19 +248,11 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   input: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 12,
-    paddingHorizontal: 20,
-    paddingVertical: 18,
-    marginBottom: 19,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    marginBottom: 19
   },
 
   loginButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
-    borderRadius: 12,
-    paddingVertical: 18,
     marginTop: 8,
     alignItems: 'center',
   },
@@ -270,13 +263,9 @@ const styles = StyleSheet.create({
 
   registerButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: 12,
-    paddingVertical: 18,
-    paddingHorizontal: 60,
     marginBottom: 24,
-    width: '100%',
-    alignItems: 'center',
   },
+
   continueText: {
     color: 'white',
     fontSize: 16,
@@ -284,6 +273,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     fontFamily: 'Inter-Medium'
   },
+
   star: {
     position: 'absolute',
   },
