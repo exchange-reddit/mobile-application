@@ -152,7 +152,7 @@ export default function LoginScreen() {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <AnimatedLinearGradient
-        colors={['#020030', '#614798', '#3743AC']} // background colors
+        colors={animatedColors} // background colors
         style={styles.gradient}
       >
         <View style={styles.grainOverlay} />
@@ -215,13 +215,13 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
 
   grainOverlay: {
-  ...StyleSheet.absoluteFillObject,
-  backgroundColor: 'rgba(0, 0, 0, 0.15)',
-  opacity: 0.8,
-  // 미세한 패턴 효과
-  borderWidth: 0.5,
-  borderColor: 'rgba(0, 0, 0, 0.05)',
-},
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    opacity: 0.8,
+    // 미세한 패턴 효과
+    borderWidth: 0.5,
+    borderColor: 'rgba(0, 0, 0, 0.05)',
+  },
 
   container: {
     flex: 1,
@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
+
   loginButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
     borderRadius: 12,
@@ -285,6 +286,7 @@ const styles = StyleSheet.create({
   bottomSection: {
     alignItems: 'center',
   },
+
   registerButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
     borderRadius: 12,
