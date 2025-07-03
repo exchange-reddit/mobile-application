@@ -93,19 +93,19 @@ export default function LoginScreen() {
 
   // Gradient color sets for animation
   const gradientSets = [
-    ['#020030', '#614798', '#3743AC'],
-    ['#614798', '#3743AC', '#020030'],
-    ['#3743AC', '#020030', '#614798'],
+    ['#020030', '#614798', '#3743AC'], // state 0
+    ['#614798', '#3743AC', '#020030'], // state 1
+    ['#3743AC', '#020030', '#614798'], // state 2
   ];
 
   useEffect(() => {
     // Start the gradient animation
     const animateGradient = () => {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(gradientAnimation, {
-            toValue: 1,
-            duration: 4000,
+      Animated.loop( // 반복
+        Animated.sequence([ // 애니메이션 순서
+          Animated.timing(gradientAnimation, { 
+            toValue: 1, // state 1로 바뀌는 중인 애니메이션 
+            duration: 4000, // 4초 동안 애니메이션 
             useNativeDriver: false,
           }),
           Animated.timing(gradientAnimation, {
@@ -125,18 +125,16 @@ export default function LoginScreen() {
     animateGradient();
   }, []);
 
-  const animatedColors = gradientSets[0].map((_, index) => 
-    gradientAnimation.interpolate({
-      inputRange: [0, 1, 2],
+  const animatedColors = gradientSets[0].map((_, index) =>  
+    gradientAnimation.interpolate({ // interpolate == 색이 서서히 바뀌는 애니메이션
+      inputRange: [0, 1, 2], // state 값을 세팅 (0, 1, 2)
       outputRange: [
-        gradientSets[0][index],
-        gradientSets[1][index],
-        gradientSets[2][index],
+        gradientSets[0][index], // toValue에 쓰일 값을 세팅 (state 1)
+        gradientSets[1][index], // state 2
+        gradientSets[2][index], // state 3 
       ],
     })
   );
-
-  //until this
 
   const handleLogin = () => {
     console.log('Login pressed');
