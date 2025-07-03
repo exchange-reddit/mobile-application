@@ -193,8 +193,7 @@ export default function LoginScreen() {
           </View>
         </View>
 
-        {/* Home indicator */}
-        <View style={styles.homeIndicator} />
+        
       </AnimatedLinearGradient>
     </SafeAreaView>
   );
@@ -233,14 +232,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 40,
+    fontFamily: 'Inter-Medium'
   },
   title: {
-    fontSize: 48,
+    fontSize: 40,
     fontWeight: '300',
     color: 'white',
     textAlign: 'center',
     marginBottom: 80,
     letterSpacing: -1,
+    fontFamily: 'Inter-Bold'
   },
   formContainer: {
     marginBottom: 60,
@@ -268,6 +269,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     letterSpacing: 1,
+    fontFamily: 'Inter-SemiBold'
   },
   bottomSection: {
     alignItems: 'center',
@@ -286,23 +288,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     letterSpacing: 1,
+    fontFamily: 'Inter-SemiBold'
   },
   continueText: {
     color: 'white',
     fontSize: 16,
     textDecorationLine: 'underline',
     opacity: 0.8,
+    fontFamily: 'Inter-Medium'
   },
   star: {
     position: 'absolute',
-  },
-  homeIndicator: {
-    width: 134,
-    height: 5,
-    backgroundColor: 'white',
-    borderRadius: 3,
-    alignSelf: 'center',
-    marginBottom: 8,
-    opacity: 0.8,
   },
   });
