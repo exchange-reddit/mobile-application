@@ -1,3 +1,4 @@
+import FONTS from '@/constants/Font';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react'; // useRef, useEffect 추가
 import {
@@ -155,7 +156,6 @@ export default function LoginScreen() {
         colors={animatedColors} // background colors
         style={styles.gradient}
       >
-        <View style={styles.grainOverlay} />
 
         {/* Background decorative elements */}
         <CircularLines />
@@ -168,11 +168,11 @@ export default function LoginScreen() {
 
         {/* Main content */}
         <View style={styles.content}>
-          <Text style={styles.title}>Omniversity</Text>
+          <Text style={[FONTS.titleFont, styles.title]}>Omniversity</Text>
           
           <View style={styles.formContainer}>
             <TextInput
-              style={styles.input}
+              style={[FONTS.inputFont, styles.input]}
               placeholder="Enter your email"
               placeholderTextColor="rgba(255, 255, 255, 0.7)"
               value={email}
@@ -182,7 +182,7 @@ export default function LoginScreen() {
             />
             
             <TextInput
-              style={styles.input}
+              style={[FONTS.inputFont, styles.input]}
               placeholder="Enter your password"
               placeholderTextColor="rgba(255, 255, 255, 0.7)"
               value={password}
@@ -191,13 +191,13 @@ export default function LoginScreen() {
             />
             
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-              <Text style={styles.loginButtonText}>LOGIN</Text>
+              <Text style={[FONTS.buttonFont]}>LOGIN</Text>
             </TouchableOpacity>
           </View>
           
           <View style={styles.bottomSection}>
             <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-              <Text style={styles.registerButtonText}>REGISTER</Text>
+              <Text style={[FONTS.buttonFont]}>REGISTER</Text>
             </TouchableOpacity>
             
             <TouchableOpacity onPress={handleContinueWithoutRegistration}>
@@ -213,7 +213,8 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-
+  // 애니메이션 효과 때문에 필요 없을것 같아 일단 View를 지웠습니다. 
+  // 그래도 혹시 몰라 스타일은 남깁니다. 
   grainOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.15)',
@@ -229,14 +230,7 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
   },
-  statusBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
+  // 타이틀, 이메일 및 비밀번호 입력창, 로그인 버튼, 회원가입 버튼, 계속하기 버튼을 포함하는 컨테이너.
   content: {
     flex: 1,
     justifyContent: 'space-between',
@@ -245,14 +239,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Medium'
   },
   title: {
-    fontSize: 40,
-    fontWeight: '100',
-    color: 'white',
     textAlign: 'center',
     marginTop: 180,
     marginBottom: -100,
-    letterSpacing: -1,
-    fontFamily: 'Inter-Bold'
   },
   formContainer: {
     marginBottom: 0,
@@ -263,8 +252,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 18,
     marginBottom: 19,
-    fontSize: 16,
-    color: 'white',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
@@ -276,13 +263,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     alignItems: 'center',
   },
-  loginButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 1,
-    fontFamily: 'Inter-SemiBold'
-  },
+
   bottomSection: {
     alignItems: 'center',
   },
@@ -295,13 +276,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     width: '100%',
     alignItems: 'center',
-  },
-  registerButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 1,
-    fontFamily: 'Inter-SemiBold'
   },
   continueText: {
     color: 'white',
