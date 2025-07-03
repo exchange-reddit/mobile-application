@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'; // useRef, useEffect
 import {
   Animated,
   Dimensions,
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
@@ -13,6 +12,7 @@ import {
 } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 
+
 // fetches the device screen width and height for responsive design.
 const { width, height } = Dimensions.get('window');
 
@@ -21,9 +21,9 @@ const StarIcon = ({ size = 8, style }) => {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" style={style}>
       <Path
-        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+        d="M 0 -10 M 12 5 C 12 11 15 14 20 14 C 15 14 12 17 12 23 c 0 -6 -3 -9 -9 -9 C 9 14 12 11 12 5 z"
         fill="white"
-        opacity={0.8}
+        opacity={0.9}
       />
     </Svg>
   );
@@ -50,16 +50,18 @@ const CircularLines = () => (
       />
     ))}
     {/* Small dots on the circles */}
-    <Circle cx={width * 0.2} cy={120} r="2" fill="white" opacity={0.6} />
-    <Circle cx={width * 0.8} cy={160} r="2" fill="white" opacity={0.6} />
-    <Circle cx={width * 0.15} cy={200} r="2" fill="white" opacity={0.6} />
-    <Circle cx={width * 0.85} cy={240} r="2" fill="white" opacity={0.6} />
-    <Circle cx={width * 0.3} cy={280} r="2" fill="white" opacity={0.6} />
-    <Circle cx={width * 0.7} cy={320} r="2" fill="white" opacity={0.6} />
+    <Circle cx={width * 0.2} cy={103} r="2" fill="white" opacity={0.8} />
+    <Circle cx={width * 0.8} cy={153} r="2" fill="white" opacity={0.8} />
+    <Circle cx={width * 0.15} cy={186} r="2" fill="white" opacity={0.8} />
+    <Circle cx={width * 0.85} cy={240} r="2" fill="white" opacity={0.8} />
+    <Circle cx={width * 0.3} cy={280} r="2" fill="white" opacity={0.8} />
+    <Circle cx={width * 0.7} cy={320} r="2" fill="white" opacity={0.8} />
   </Svg>
 );
 //29.June Nayeon edited
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
+
+
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -128,7 +130,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <AnimatedLinearGradient
         colors={['#020030', '#614798', '#3743AC']} // background colors
@@ -142,16 +144,6 @@ export default function LoginScreen() {
         <StarIcon size={8} style={[styles.star, { top: height * 0.45, right: width * 0.1 }]} />
         <StarIcon size={10} style={[styles.star, { bottom: height * 0.35, left: width * 0.2 }]} />
         <StarIcon size={6} style={[styles.star, { bottom: height * 0.15, right: width * 0.25 }]} />
-
-        {/* Status bar info */}
-        <View style={styles.statusBar}>
-          <Text style={styles.time}>12:00</Text>
-          <View style={styles.statusIcons}>
-            <Text style={styles.statusIcon}>📶</Text>
-            <Text style={styles.statusIcon}>📶</Text>
-            <Text style={styles.statusIcon}>🔋</Text>
-          </View>
-        </View>
 
         {/* Main content */}
         <View style={styles.content}>
@@ -195,7 +187,7 @@ export default function LoginScreen() {
 
         
       </AnimatedLinearGradient>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -301,3 +293,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   });
+  
+  
