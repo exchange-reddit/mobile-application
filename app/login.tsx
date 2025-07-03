@@ -19,7 +19,6 @@ import Svg, { Circle, Defs, Path, RadialGradient, Stop } from 'react-native-svg'
 // fetches the device screen width and height for responsive design.
 const { width, height } = Dimensions.get('window');
 
-// TODO: 별모양 Svg사용해서 더 예쁘게 만들기 -> 3 July 나연 완료
 const StarIcon = ({ size = 8, style }) => {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" style={style}>
