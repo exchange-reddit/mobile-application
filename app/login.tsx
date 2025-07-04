@@ -1,8 +1,9 @@
 import BUTTONS from '@/constants/Button';
 import FONTS from '@/constants/Font';
 import INPUTS from '@/constants/Input';
+import { useBackgroundAnimation } from '@/hooks/useBackgroundAnimation';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useRef, useState } from 'react'; // useRef, useEffect 추가
+import React, { useState } from 'react'; // useRef, useEffect 추가
 import {
   Animated,
   Dimensions,
@@ -88,53 +89,8 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Animation values
-  const gradientAnimation = useRef(new Animated.Value(0)).current;
+  const animatedColors = useBackgroundAnimation();
 
-  // Gradient color sets for animation
-  const gradientSets = [
-    ['#020030', '#614798', '#3743AC'], // state 0
-    ['#614798', '#3743AC', '#020030'], // state 1
-    ['#3743AC', '#020030', '#614798'], // state 2
-  ];
-
-  useEffect(() => {
-    // Start the gradient animation
-    const animateGradient = () => {
-      Animated.loop( // 반복
-        Animated.sequence([ // 애니메이션 순서
-          Animated.timing(gradientAnimation, { 
-            toValue: 1, // state 1로 바뀌는 중인 애니메이션 
-            duration: 4000, // 4초 동안 애니메이션 
-            useNativeDriver: false,
-          }),
-          Animated.timing(gradientAnimation, {
-            toValue: 2,
-            duration: 4000,
-            useNativeDriver: false,
-          }),
-          Animated.timing(gradientAnimation, {
-            toValue: 0,
-            duration: 4000,
-            useNativeDriver: false,
-          }),
-        ])
-      ).start();
-    };
-
-    animateGradient();
-  }, []);
-
-  const animatedColors = gradientSets[0].map((_, index) =>  
-    gradientAnimation.interpolate({ // interpolate == 색이 서서히 바뀌는 애니메이션
-      inputRange: [0, 1, 2], // state 값을 세팅 (0, 1, 2)
-      outputRange: [
-        gradientSets[0][index], // toValue에 쓰일 값을 세팅 (state 1)
-        gradientSets[1][index], // state 2
-        gradientSets[2][index], // state 3 
-      ],
-    })
-  );
 
   const handleLogin = () => {
     console.log('Login pressed');
