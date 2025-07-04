@@ -249,9 +249,13 @@ const styles = StyleSheet.create({
   },
 
   loginButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: 'rgba(210, 173, 237, 0.39)',
     marginTop: 8,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
 
   bottomSection: {
@@ -259,8 +263,12 @@ const styles = StyleSheet.create({
   },
 
   registerButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: 'rgba(192, 219, 239, 0.37)',
     marginBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
 
   continueText: {
