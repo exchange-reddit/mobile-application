@@ -32,7 +32,7 @@ const StarIcon = ({ size = 8, style }) => {
   );
 };
 
-// TODO: 원형 선 위치 조정하기 
+
 
 const CircularLines = () => (
   <Svg
