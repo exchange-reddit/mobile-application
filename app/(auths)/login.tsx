@@ -1,8 +1,7 @@
 import BUTTONS from '@/constants/Button';
 import FONTS from '@/constants/Font';
 import INPUTS from '@/constants/Input';
-import { useBackgroundAnimation } from '@/hooks/useBackgroundAnimation';
-import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react'; // useRef, useEffect 추가
 import {
   Animated,
@@ -177,17 +176,12 @@ const CircularLines = () => {
 };
 
 
-//29.June Nayeon edited
-const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
-
-
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const animatedColors = useBackgroundAnimation();
-
+  const router = useRouter();
 
   const handleLogin = () => {
     console.log('Login pressed');
@@ -195,6 +189,7 @@ export default function LoginScreen() {
 
   const handleRegister = () => {
     console.log('Register pressed');
+    router.push('/register');
   };
 
   const handleContinueWithoutRegistration = () => {
@@ -204,10 +199,6 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <AnimatedLinearGradient
-        colors={animatedColors} // background colors
-        style={styles.gradient}
-      >
 
         {/* Background decorative elements */}
         <CircularLines />
@@ -257,9 +248,6 @@ export default function LoginScreen() {
             </TouchableOpacity>
           </View>
         </View>
-
-        
-      </AnimatedLinearGradient>
     </View>
   );
 }
