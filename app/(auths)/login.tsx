@@ -16,6 +16,7 @@ import {
 import Svg, { Circle, Defs, Path, RadialGradient, Stop } from 'react-native-svg';
 
 //5 July 도현님 제가 해냈어요(기존 위치에서 원 반짝이고 없어지는 애니메이션)
+// 👍👍👍👍👍
 
 // fetches the device screen width and height for responsive design.
 const { width, height } = Dimensions.get('window');
