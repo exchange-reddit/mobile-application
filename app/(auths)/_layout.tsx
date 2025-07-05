@@ -31,23 +31,23 @@ export default function AuthLayout() {
       <AnimatedLinearGradient
         colors={animatedColors} // background colors
         style={styles.gradient}
-      >
-        <Stack screenOptions={{
-          contentStyle: { backgroundColor: 'transparent' },
-          headerShown: false,
-          animation: 'fade', // optional, to make transitions softer
-        }}>
-          <Stack.Screen name="login" options={{headerShown: false}}/>
-          <Stack.Screen name="register" options={{headerShown: false}}/>
-        </Stack>
-        <StatusBar style="auto" />
-      </AnimatedLinearGradient>
+      />
+      <Stack screenOptions={{
+        contentStyle: { backgroundColor: 'transparent' },
+        headerShown: false,
+        animation: 'fade', // optional, to make transitions softer
+      }}>
+        <Stack.Screen name="login" options={{headerShown: false}}/>
+        <Stack.Screen name="register" options={{headerShown: false}}/>
+      </Stack>
+      <StatusBar style="auto" />
     </ThemeProvider>
   );
 }
 
 const styles = StyleSheet.create({ 
   gradient: {
+    ...StyleSheet.absoluteFillObject, 
     flex: 1,
   }
 });
