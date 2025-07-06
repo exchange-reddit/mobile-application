@@ -1,9 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 const FONTS = StyleSheet.create({
-    titleFont: {
+    omniversityFont: {
         fontFamily: 'Inter-Bold',
         fontSize: 40,
+        fontWeight: '100',
+        letterSpacing: -1,
+        color: 'white',
+    }, 
+    titleFont: {
+        fontFamily: 'Inter-Bold',
+        fontSize: 35,
         fontWeight: '100',
         letterSpacing: -1,
         color: 'white',

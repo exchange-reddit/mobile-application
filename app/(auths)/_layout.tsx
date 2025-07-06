@@ -38,7 +38,7 @@ export default function AuthLayout() {
         animation: 'fade', // optional, to make transitions softer
       }}>
         <Stack.Screen name="login" options={{headerShown: false}}/>
-        <Stack.Screen name="register" options={{headerShown: false}}/>
+        <Stack.Screen name="verification" options={{headerShown: false}}/>
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
