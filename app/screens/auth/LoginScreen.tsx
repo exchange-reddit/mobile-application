@@ -1,4 +1,4 @@
-import { AuthStackParamList } from '@/app/navigators/AuthStack';
+import { RootStackParamList } from '@/app/navigators/RootNavigator';
 import BUTTONS from '@/constants/Button';
 import FONTS from '@/constants/Font';
 import INPUTS from '@/constants/Input';
@@ -21,17 +21,46 @@ export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    type Nav = NativeStackNavigationProp<AuthStackParamList, 'Verification'>;
+    type Nav = NativeStackNavigationProp<RootStackParamList>;
 
     const navigation = useNavigation<Nav>();
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         console.log('Login pressed');
+        // try {
+        //     const loginUrl = process.env.EXPO_PUBLIC_LOGIN_URL;
+
+        //     if (!loginUrl) {
+        //         console.error(
+        //             'Login URL is not defined. Please check your app.config.js and environment variables.',
+        //         );
+        //         return;
+        //     }
+
+        //     console.log(`Attempting to fetch from: ${loginUrl}`);
+
+        //     const response = await fetch(loginUrl);
+
+        //     if (!response.ok) {
+        //         const errorText = await response.text();
+        //         console.error(
+        //             `HTTP error! status: ${response.status}, message: ${errorText}`,
+        //         );
+
+        //         throw new Error(`Login failed with status: ${response.status}`);
+        //     }
+
+        //     const json = await response.json();
+        //     console.log('Login successful:', json);
+        navigation.navigate('Main', { screen: 'Home' });
+        // } catch (error) {
+        //     console.error('Login error:', error);
+        // }
     };
 
     const handleRegister = () => {
         console.log('Register pressed');
-        navigation.navigate('Verification');
+        navigation.navigate('Auth', { screen: 'Verification' });
     };
 
     const handleContinueWithoutRegistration = () => {
