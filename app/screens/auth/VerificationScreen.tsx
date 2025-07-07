@@ -199,15 +199,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     // 타이틀, 이메일 및 비밀번호 입력창, 로그인 버튼, 회원가입 버튼, 계속하기 버튼을 포함하는 컨테이너.
+    //
     content: {
         flex: 1,
         justifyContent: 'space-between',
-        paddingVertical: 60,
-        paddingHorizontal: 30,
+        paddingVertical: 150,
+        paddingHorizontal: 20,
     },
     title: {
         textAlign: 'center',
-        marginTop: 50,
+        marginTop: 60,
     },
     line: {
         flexDirection: 'row',
@@ -240,19 +241,30 @@ const styles = StyleSheet.create({
     },
 
     root: { flex: 1, padding: 20 },
-    title: { textAlign: 'center', fontSize: 30 },
+    title: { 
+        
+        textAlign: 'center', 
+        fontSize: 30 ,
+        marginBottom: 50
+    
+    },
     codeFieldRoot: { marginTop: 20 },
     cell: {
         width: 40,
         height: 40,
         lineHeight: 38,
         fontSize: 24,
-        borderWidth: 2,
-        borderColor: '#00000030',
+        borderWidth: 1.5,
+        borderColor: '#8799BC',
         textAlign: 'center',
-        color: '#000', // text color
+        color: '#6577EC', // text color
+        marginBlock: 2,
+        marginHorizontal: 15,
+        borderRadius: 10
+
     },
     focusCell: {
-        borderColor: '#000',
+        borderColor: '#6577EC',
+
     },
 });
