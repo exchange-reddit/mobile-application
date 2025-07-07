@@ -54,8 +54,8 @@ export default function LoginScreen() {
                             INPUTS.oneLineInput,
                             styles.input,
                         ]}
-                        placeholder="Enter your email"
-                        placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                        placeholder="HI"
+                        placeholderTextColor="rgba(0, 255, 174, 0.7)7)"
                         value={email}
                         onChangeText={setEmail}
                         keyboardType="email-address"
