@@ -79,7 +79,7 @@ export default function LoginScreen() {
                         style={[BUTTONS.bigButton, styles.loginButton]}
                         onPress={handleLogin}
                     >
-                        <Text style={[FONTS.buttonFont]}>LOGIN</Text>
+                        <Text style={[FONTS.bigButtonFont]}>LOGIN</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -88,7 +88,7 @@ export default function LoginScreen() {
                         style={[BUTTONS.bigButton, styles.registerButton]}
                         onPress={handleRegister}
                     >
-                        <Text style={[FONTS.buttonFont]}>REGISTER</Text>
+                        <Text style={[FONTS.bigButtonFont]}>REGISTER</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -143,13 +143,8 @@ const styles = StyleSheet.create({
     },
 
     loginButton: {
-        backgroundColor: 'rgba(210, 173, 237, 0.39)',
         marginTop: 8,
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
     },
 
     bottomSection: {
@@ -157,12 +152,7 @@ const styles = StyleSheet.create({
     },
 
     registerButton: {
-        backgroundColor: 'rgba(192, 219, 239, 0.37)',
         marginBottom: 24,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
     },
 
     continueText: {

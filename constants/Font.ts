@@ -7,25 +7,31 @@ const FONTS = StyleSheet.create({
         fontWeight: '100',
         letterSpacing: -1,
         color: 'white',
-    }, 
+    },
     titleFont: {
         fontFamily: 'Inter-Bold',
         fontSize: 35,
         fontWeight: '100',
         letterSpacing: -1,
         color: 'white',
-    }, 
+    },
     inputFont: {
-        fontSize: 16,
         color: 'white',
-    }, 
-    buttonFont: {
+    },
+    bigButtonFont: {
         color: 'white',
+        fontFamily: 'Inter-SemiBold',
         fontSize: 16,
         fontWeight: '600',
         letterSpacing: 1,
-        fontFamily: 'Inter-SemiBold'
-    }
+    },
+    smallButtonFont: {
+        color: 'white',
+        fontSize: 13,
+        fontWeight: '600',
+        letterSpacing: 0.5,
+        fontFamily: 'Inter-SemiBold',
+    },
 });
 
 export default FONTS;
