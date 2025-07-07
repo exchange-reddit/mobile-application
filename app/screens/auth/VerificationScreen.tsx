@@ -120,6 +120,7 @@ export default function VerificationScreen() {
                     </TouchableOpacity>
                 </View>
                 <SafeAreaView style={styles.root}>
+                    <View style={styles.codeFieldContainer}>
                     <CodeField
                         ref={ref}
                         {...props}
@@ -145,8 +146,11 @@ export default function VerificationScreen() {
                             </Text>
                         )}
                     />
+                    <Text style={styles.confirmedText}>Confirmed!</Text>
+                    </View>
+
                 </SafeAreaView>
-                <Text style={styles.confirmedText}>Confirmed!</Text>
+
                 <Text style={styles.passwordGuideText}>
                     Your password must consist of number, and special character
                     </Text>
@@ -192,10 +196,11 @@ const styles = StyleSheet.create({
 passwordGuideText: {
   color: '#D1C9EF',       // 밝은 보라색 톤
   fontSize: 12,           // 작게
-  marginBottom: 6,        // 아래 입력칸과 살짝 간격
+  marginTop: 60,
+  marginBottom: 10,        // 아래 입력칸과 살짝 간격
 },
 passwordInput: {
-  marginBottom: 12, // ✅ 입력칸 사이 간격
+  marginBottom: 10, // ✅ 입력칸 사이 간격
 },
 
 
@@ -208,6 +213,12 @@ passwordInput: {
         borderColor: 'rgba(0, 0, 0, 0.05)',
     },
     
+    codeFieldContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-end', // 셀들과 아래 정렬
+        justifyContent: 'flex-start',
+        marginTop: 1,
+},
 
     container: {
         flex: 1,
@@ -229,7 +240,8 @@ passwordInput: {
     },
     title: {
         textAlign: 'center',
-        marginTop: 60,
+        marginTop: 40,
+        marginBottom: 60,
     },
     line: {
         flexDirection: 'row',
@@ -246,10 +258,6 @@ passwordInput: {
     },
     emailInput: {
         marginRight: 20,
-    },
-    bottomSection: {
-        alignItems: 'center',
-        
     },
 
     continueText: {
@@ -280,13 +288,13 @@ passwordInput: {
         borderRadius: 10
     },
 
-    confirmedText: {
-        color: '#D1C9EF',
-        textAlign: 'right',
-        fontSize: 13,
-        marginTop: 1,
-        marginRight: 20,
-},    
+confirmedText: {
+    color: '#D1C9EF',
+    fontSize: 13,
+  marginLeft: 60,       // 셀들과 간격
+  marginBottom: 10,    // 셀보다 살짝 아래 위치
+},
+
     focusCell: {
         borderColor: '#6577EC',
 
