@@ -27,35 +27,45 @@ export default function LoginScreen() {
 
     const handleLogin = async () => {
         console.log('Login pressed');
-        // try {
-        //     const loginUrl = process.env.EXPO_PUBLIC_LOGIN_URL;
+        try {
+            const loginUrl = process.env.EXPO_PUBLIC_LOGIN_URL;
 
-        //     if (!loginUrl) {
-        //         console.error(
-        //             'Login URL is not defined. Please check your app.config.js and environment variables.',
-        //         );
-        //         return;
-        //     }
+            if (!loginUrl) {
+                console.error(
+                    'Login URL is not defined. Please check your app.config.js and environment variables.',
+                );
+                return;
+            }
 
-        //     console.log(`Attempting to fetch from: ${loginUrl}`);
+            console.log(`Attempting to fetch from: ${loginUrl}`);
 
-        //     const response = await fetch(loginUrl);
+            const response = await fetch(loginUrl, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    homeUniEmail: email,
+                    password: password,
+                }),
+            });
 
-        //     if (!response.ok) {
-        //         const errorText = await response.text();
-        //         console.error(
-        //             `HTTP error! status: ${response.status}, message: ${errorText}`,
-        //         );
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error(
+                    `HTTP error! status: ${response.status}, message: ${errorText}`,
+                );
 
-        //         throw new Error(`Login failed with status: ${response.status}`);
-        //     }
+                throw new Error(`Login failed with status: ${response.status}`);
+            }
 
-        //     const json = await response.json();
-        //     console.log('Login successful:', json);
-        navigation.navigate('Main', { screen: 'Home' });
-        // } catch (error) {
-        //     console.error('Login error:', error);
-        // }
+            const json = await response.json();
+            console.log('Login successful:', json);
+            navigation.navigate('Main', { screen: 'Home' });
+        } catch (error) {
+            console.error('Login error:', error);
+        }
     };
 
     const handleRegister = () => {
