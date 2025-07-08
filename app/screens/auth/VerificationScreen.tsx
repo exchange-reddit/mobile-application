@@ -96,7 +96,7 @@ export default function VerificationScreen() {
                             INPUTS.lineWithButtonInput,
                             styles.emailInput,
                         ]}
-                        placeholder="Home University Email"
+                        placeholder="Exchange University Email"
                         placeholderTextColor="rgba(255, 255, 255, 0.7)"
                         value={password}
                         onChangeText={setPassword}
@@ -111,6 +111,7 @@ export default function VerificationScreen() {
                     </TouchableOpacity>
                 </View>
                 <SafeAreaView style={styles.root}>
+                    <View style={styles.codeFieldContainer}>
                     <CodeField
                         ref={ref}
                         {...props}
@@ -136,9 +137,16 @@ export default function VerificationScreen() {
                             </Text>
                         )}
                     />
+                    <Text style={styles.confirmedText}>Confirmed!</Text>
+                    </View>
+
                 </SafeAreaView>
+
+                <Text style={styles.passwordGuideText}>
+                    Your password must consist of number, and special character
+                    </Text>
                 <TextInput
-                    style={[FONTS.inputFont, INPUTS.oneLineInput]}
+                    style={[FONTS.inputFont, INPUTS.oneLineInput, styles.passwordInput,]}
                     placeholder="Password"
                     placeholderTextColor="rgba(255, 255, 255, 0.7)"
                     value={password}
@@ -146,12 +154,12 @@ export default function VerificationScreen() {
                     secureTextEntry
                 />
                 <TextInput
-                    style={[FONTS.inputFont, INPUTS.oneLineInput]}
+                    style={[FONTS.inputFont, INPUTS.oneLineInput, styles.passwordInput, ]}
                     placeholder="Reenter Password"
                     placeholderTextColor="rgba(255, 255, 255, 0.7)"
                     value={password}
                     onChangeText={setPassword}
-                    secureTextEntry
+                    secureTextEntry   
                 />
                 <TouchableOpacity
                     style={[BUTTONS.bigButton]}
@@ -172,7 +180,21 @@ const autoComplete = Platform.select<TextInputProps['autoComplete']>({
 
 const styles = StyleSheet.create({
     // 애니메이션 효과 때문에 필요 없을것 같아 일단 View를 지웠습니다.
-    // 그래도 혹시 몰라 스타일은 남깁니다.
+    // 그래도 혹시 몰라 스타일은 남깁니다. 
+    bottomSection: {
+    marginTop: 'auto', // ✅ 아래로 밀어내기
+},
+passwordGuideText: {
+  color: '#D1C9EF',       // 밝은 보라색 톤
+  fontSize: 12,           // 작게
+  marginTop: 60,
+  marginBottom: 10,        // 아래 입력칸과 살짝 간격
+},
+passwordInput: {
+  marginBottom: 10, // ✅ 입력칸 사이 간격
+},
+
+
     grainOverlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(0, 0, 0, 0.15)',
@@ -181,10 +203,19 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: 'rgba(0, 0, 0, 0.05)',
     },
+    
+    codeFieldContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-end', // 셀들과 아래 정렬
+        justifyContent: 'flex-start',
+        marginTop: 1,
+},
 
     container: {
         flex: 1,
         backgroundColor: 'transparent',
+        marginBottom: 30,
+        
     },
     gradient: {
         flex: 1,
@@ -193,17 +224,21 @@ const styles = StyleSheet.create({
     //
     content: {
         flex: 1,
-        justifyContent: 'space-between',
-        paddingVertical: 150,
+        justifyContent: 'flex-start', 
+        paddingTop: 160, 
+        paddingBottom: 80, 
         paddingHorizontal: 20,
     },
     title: {
         textAlign: 'center',
-        marginTop: 60,
+        marginTop: 40,
+        marginBottom: 60,
     },
     line: {
         flexDirection: 'row',
         padding: 10,
+        paddingVertical: 8,
+        justifyContent: 'space-between', // ✅ 좌우 정렬
         alignItems: 'center',
         alignContent: 'center',
         width: '100%',
@@ -215,9 +250,6 @@ const styles = StyleSheet.create({
     emailInput: {
         marginRight: 20,
     },
-    bottomSection: {
-        alignItems: 'center',
-    },
 
     continueText: {
         color: 'white',
@@ -227,31 +259,36 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter-Medium',
     },
 
+    
     star: {
         position: 'absolute',
     },
 
-    root: { flex: 1, padding: 20 },
-    title: {
-        textAlign: 'center',
-        fontSize: 30,
-        marginBottom: 50,
-    },
-    codeFieldRoot: { marginTop: 20 },
+    root: { padding: 20 },
+    codeFieldRoot: { marginTop: 10, alignSelf: 'flex-start', marginLeft: 10, },
     cell: {
-        width: 40,
-        height: 40,
-        lineHeight: 38,
-        fontSize: 24,
+        width: 35,
+        height: 35,
+        lineHeight: 35,
+        fontSize: 22,
         borderWidth: 1.5,
         borderColor: '#8799BC',
         textAlign: 'center',
         color: '#6577EC', // text color
-        marginBlock: 2,
-        marginHorizontal: 15,
-        borderRadius: 10,
+        marginHorizontal: 6,
+        borderRadius: 10
     },
+
+confirmedText: {
+    color: '#D1C9EF',
+    fontSize: 13,
+  marginLeft: 60,       // 셀들과 간격
+  marginBottom: 10,    // 셀보다 살짝 아래 위치
+},
+
     focusCell: {
         borderColor: '#6577EC',
     },
+
+    
 });
