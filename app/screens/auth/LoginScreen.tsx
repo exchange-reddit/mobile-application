@@ -2,6 +2,7 @@ import { RootStackParamList } from '@/app/navigators/RootNavigator';
 import BUTTONS from '@/constants/Button';
 import FONTS from '@/constants/Font';
 import INPUTS from '@/constants/Input';
+import { storeTokens } from '@/utils/secureStorage';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react'; // useRef, useEffect 추가
@@ -62,6 +63,7 @@ export default function LoginScreen() {
 
             const json = await response.json();
             console.log('Login successful:', json);
+            await storeTokens(json.accessToken, json.refreshToken);
             navigation.navigate('Main', { screen: 'Home' });
         } catch (error) {
             console.error('Login error:', error);

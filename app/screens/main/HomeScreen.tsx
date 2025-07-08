@@ -1,9 +1,17 @@
 import { RootStackParamList } from '@/app/navigators/RootNavigator';
+import BUTTONS from '@/constants/Button';
 import FONTS from '@/constants/Font';
+import { removeTokens } from '@/utils/secureStorage';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react'; // useRef, useEffect 추가
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import {
+    StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 
 export default function HomeScreen() {
     const [email, setEmail] = useState('');
@@ -13,46 +21,10 @@ export default function HomeScreen() {
 
     const navigation = useNavigation<Nav>();
 
-    const handleLogin = async () => {
-        console.log('Login pressed');
-        try {
-            const loginUrl = process.env.EXPO_PUBLIC_LOGIN_URL;
-
-            // if (!loginUrl) {
-            //     console.error(
-            //         'Login URL is not defined. Please check your app.config.js and environment variables.',
-            //     );
-            //     return;
-            // }
-
-            // console.log(`Attempting to fetch from: ${loginUrl}`);
-
-            // const response = await fetch(loginUrl);
-
-            // if (!response.ok) {
-            //     const errorText = await response.text();
-            //     console.error(
-            //         `HTTP error! status: ${response.status}, message: ${errorText}`,
-            //     );
-
-            //     throw new Error(`Login failed with status: ${response.status}`);
-            // }
-
-            // const json = await response.json();
-            // console.log('Login successful:', json);
-            navigation.navigate('Main', { screen: 'Home' });
-        } catch (error) {
-            console.error('Login error:', error);
-        }
-    };
-
-    const handleRegister = () => {
-        console.log('Register pressed');
-        navigation.navigate('Auth', { screen: 'Verification' });
-    };
-
-    const handleContinueWithoutRegistration = () => {
-        console.log('Continue without registration pressed');
+    const handleLogout = async () => {
+        await removeTokens();
+        navigation.navigate('Auth', { screen: 'Login' });
+        console.log('User logged out successfully');
     };
 
     return (
@@ -64,6 +36,13 @@ export default function HomeScreen() {
                 <Text style={[FONTS.omniversityFont, styles.title]}>
                     Home Screen
                 </Text>
+
+                <TouchableOpacity
+                    style={[BUTTONS.bigButton, styles.registerButton]}
+                    onPress={handleLogout}
+                >
+                    <Text style={[FONTS.bigButtonFont]}>Log Out</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
