@@ -587,6 +587,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 40,
         marginBottom: 60,
+        marginTop: 40,
+        marginBottom: 60,
     },
     line: {
         flexDirection: 'row',
@@ -618,6 +620,10 @@ const styles = StyleSheet.create({
     root: { padding: 20 },
     codeFieldRoot: { marginTop: 10, alignSelf: 'flex-start', marginLeft: 10 },
     cell: {
+        width: 35,
+        height: 35,
+        lineHeight: 35,
+        fontSize: 22,
         width: 35,
         height: 35,
         lineHeight: 35,
