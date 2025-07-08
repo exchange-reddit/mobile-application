@@ -39,11 +39,6 @@ const customFadeInterpolator = ({ current, next, layouts }: any) => {
 
 export default function AuthStack() {
     const animatedColors = useBackgroundAnimation();
-    const forFade = ({ current }) => ({
-        cardStyle: {
-            opacity: current.progress,
-        },
-    });
 
     return (
         <View style={styles.container}>
