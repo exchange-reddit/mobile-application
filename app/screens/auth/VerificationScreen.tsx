@@ -22,7 +22,6 @@ import {
 } from 'react-native-confirmation-code-field';
 
 export default function VerificationScreen() {
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [value, setValue] = useState('');
     const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -33,14 +32,6 @@ export default function VerificationScreen() {
 
     const handleLogin = () => {
         console.log('Login pressed');
-    };
-
-    const handleRegister = () => {
-        console.log('Register pressed');
-    };
-
-    const handleContinueWithoutRegistration = () => {
-        console.log('Continue without registration pressed');
     };
 
     return (
@@ -297,7 +288,6 @@ confirmedText: {
 
     focusCell: {
         borderColor: '#6577EC',
-
     },
 
     
