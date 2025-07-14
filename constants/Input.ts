@@ -1,6 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 const INPUTS = StyleSheet.create({
+    basicInput: {
+        // 기본 인풋 스타일
+        fontSize: 16,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 12,
+        paddingHorizontal: 20,
+        paddingVertical: 18,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.2)',
+    },
     oneLineInput: {
         // 인풋이 한줄 전체를 전부 차지할때 사용
         fontSize: 16, // 폰트 크기는 인풋을 따라가야 함
