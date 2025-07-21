@@ -552,6 +552,7 @@ export default function VerificationScreen() {
 const styles = StyleSheet.create({
     bottomSection: {
         marginTop: 'auto',
+        
     },
     passwordGuideText: {
         color: '#D1C9EF',
@@ -561,6 +562,7 @@ const styles = StyleSheet.create({
     },
     passwordInput: {
         marginBottom: 10,
+        
     },
     grainOverlay: {
         ...StyleSheet.absoluteFillObject,
@@ -593,7 +595,7 @@ const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
         marginTop: 40,
-        marginBottom: 60,
+        marginBottom: 40,
     },
     line: {
         flexDirection: 'row',
@@ -611,6 +613,8 @@ const styles = StyleSheet.create({
     emailInput: {
         flex: 1, // Allows TextInput to take available space
         marginRight: 20,
+        
+        
     },
     continueText: {
         color: 'white',
@@ -618,12 +622,13 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         opacity: 0.8,
         fontFamily: 'Inter-Medium',
+        
     },
     star: {
         position: 'absolute',
     },
     root: { padding: 20 },
-    codeFieldRoot: { marginTop: 10, alignSelf: 'flex-start', marginLeft: 10 },
+    codeFieldRoot: { marginTop: 10, alignSelf: 'flex-start', marginLeft: 10, marginBottom: 20,},
     cell: {
         width: 35,
         height: 35,
@@ -635,6 +640,7 @@ const styles = StyleSheet.create({
         color: '#6577EC',
         marginHorizontal: 6,
         borderRadius: 10,
+        
     },
     confirmedText: {
         color: '#D1C9EF',
