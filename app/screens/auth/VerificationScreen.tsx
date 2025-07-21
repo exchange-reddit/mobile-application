@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
     passwordGuideText: {
         color: '#D1C9EF',
         fontSize: 12,
-        marginTop: 60,
+        marginTop: 30,
         marginBottom: 10,
     },
     passwordInput: {
