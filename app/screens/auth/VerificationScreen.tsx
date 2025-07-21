@@ -16,6 +16,10 @@ import {
     View,
 } from 'react-native';
 
+
+
+
+
 import {
     CodeField,
     Cursor,
@@ -24,6 +28,7 @@ import {
 } from 'react-native-confirmation-code-field';
 
 import { useRegistrationStore } from '@/libs/registration/registrationStore';
+// import { ConfirmAnimation } from '@/libs/ConfirmAnimation';
 
 // --- Constants ---
 const CELL_COUNT = 5;
@@ -548,6 +553,9 @@ export default function VerificationScreen() {
         </View>
     );
 }
+
+
+
 
 const styles = StyleSheet.create({
     bottomSection: {
