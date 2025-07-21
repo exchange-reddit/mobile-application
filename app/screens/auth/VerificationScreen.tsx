@@ -318,6 +318,8 @@ export default function VerificationScreen() {
                                     !isSendingHomeCode && !isHomeUniCodeVerified
                                 }
                             />
+
+                            <View style={{ width: 100, alignItems: 'flex-end' }}>
                             {!isHomeUniCodeVerified ? (
                                 <TouchableOpacity
                                     style={[BUTTONS.smallButton]}
@@ -344,6 +346,8 @@ export default function VerificationScreen() {
                                     Confirmed!
                                 </Text>
                             )}
+                            </View>
+
                         </View>
                         <SafeAreaView style={styles.root}>
                             {!isHomeUniCodeVerified && (
@@ -406,6 +410,8 @@ export default function VerificationScreen() {
                                     !isExchangeUniCodeVerified
                                 }
                             />
+
+                            <View style={{ width: 100, alignItems: 'flex-end' }}>
                             {!isExchangeUniCodeVerified ? (
                                 <TouchableOpacity
                                     style={[BUTTONS.smallButton]}
@@ -432,6 +438,7 @@ export default function VerificationScreen() {
                                     Confirmed!
                                 </Text>
                             )}
+                            </View>
                         </View>
                         <SafeAreaView style={styles.root}>
                             <View style={styles.codeFieldContainer}>
