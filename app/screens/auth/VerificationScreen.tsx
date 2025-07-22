@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
+    Dimensions,
     Platform,
     SafeAreaView,
     StatusBar,
@@ -13,7 +14,7 @@ import {
     TextInput,
     TextInputProps,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 
 
@@ -33,11 +34,12 @@ import { useRegistrationStore } from '@/libs/registration/registrationStore';
 // --- Constants ---
 const CELL_COUNT = 5;
 const VERIFICATION_TYPE_UNI_EMAIL = 1;
-
+const { width, height } = Dimensions.get('window');
 const autoComplete = Platform.select<TextInputProps['autoComplete']>({
     android: 'sms-otp',
     default: 'one-time-code',
 });
+
 
 export default function VerificationScreen() {
     // --- Form Data States ---
@@ -596,14 +598,14 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         justifyContent: 'flex-start',
-        paddingTop: 160,
-        paddingBottom: 80,
-        paddingHorizontal: 20,
+        paddingTop: height * 0.2,
+        paddingBottom: height * 0.1,
+        paddingHorizontal: width * 0.05,
     },
     title: {
         textAlign: 'center',
-        marginTop: 40,
-        marginBottom: 40,
+        marginTop: height * 0.02,
+        marginBottom: height * 0.05,
     },
     line: {
         flexDirection: 'row',
