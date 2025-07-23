@@ -32,6 +32,8 @@ import { useRegistrationStore } from '@/libs/registration/registrationStore';
 // import { ConfirmAnimation } from '@/libs/ConfirmAnimation';
 
 // --- Constants ---
+
+
 const CELL_COUNT = 5;
 const VERIFICATION_TYPE_UNI_EMAIL = 1;
 const { width, height } = Dimensions.get('window');
@@ -609,7 +611,7 @@ const styles = StyleSheet.create({
     },
     line: {
         flexDirection: 'row',
-        padding: 10,
+        padding: width * 0.02,
         paddingVertical: 8,
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -622,7 +624,7 @@ const styles = StyleSheet.create({
     },
     emailInput: {
         flex: 1, // Allows TextInput to take available space
-        marginRight: 20,
+        marginRight: width * 0.02,
         
         
     },
