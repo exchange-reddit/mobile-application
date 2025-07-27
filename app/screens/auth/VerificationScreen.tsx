@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
+    Dimensions,
     Platform,
     SafeAreaView,
     StatusBar,
@@ -13,7 +14,7 @@ import {
     TextInput,
     TextInputProps,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 
 import {
@@ -26,6 +27,11 @@ import {
 import { useRegistrationStore } from '@/libs/registration/registrationStore';
 
 // --- Constants ---
+const { height } = Dimensions.get('window');
+const marginHeight = height * 1;
+
+
+
 const CELL_COUNT = 5;
 const VERIFICATION_TYPE_UNI_EMAIL = 1;
 
@@ -522,9 +528,10 @@ export default function VerificationScreen() {
                     </Text>
                 ) : null}
 
+            </View>
                 {/* Continue Button */}
                 <TouchableOpacity
-                    style={[BUTTONS.bigButton]}
+                    style={[BUTTONS.bigButton, styles.continueButton]}
                     onPress={handleContinue}
                     // Disable if any API call is in progress or if verification/password conditions are not met
                     disabled={
@@ -537,12 +544,14 @@ export default function VerificationScreen() {
                 >
                     <Text style={[FONTS.bigButtonFont]}>Continue</Text>
                 </TouchableOpacity>
-            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    continueButton: {
+        marginTop: 10,
+    }, 
     bottomSection: {
         marginTop: 'auto',
     },
@@ -572,6 +581,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
         marginBottom: 30,
+        
     },
     gradient: {
         flex: 1,
