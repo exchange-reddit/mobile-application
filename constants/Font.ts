@@ -15,6 +15,13 @@ const FONTS = StyleSheet.create({
         letterSpacing: -1,
         color: 'white',
     },
+    subTitleFont: {
+        fontFamily: 'Inter-Bold',
+        fontSize: 25,
+        fontWeight: '100',
+        letterSpacing: -1,
+        color: 'white',
+    },
     inputFont: {
         color: 'white',
     },

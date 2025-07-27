@@ -6,12 +6,13 @@
         "start": "expo start",
         "reset-project": "node ./scripts/reset-project.js",
         "android": "expo start --android",
-        "ios": "expo start --ios --port 19006",
+        "ios": "REACT_NATIVE_PACKAGER_HOSTNAME=172.32.249.141 expo start --ios --port 19006",
         "web": "expo start --web",
         "lint": "expo lint"
     },
     "dependencies": {
         "@expo/vector-icons": "^14.1.0",
+        "@react-native-picker/picker": "^2.11.1",
         "@react-navigation/bottom-tabs": "^7.4.2",
         "@react-navigation/elements": "^2.3.8",
         "@react-navigation/native": "^7.1.14",

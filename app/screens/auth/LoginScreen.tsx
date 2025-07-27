@@ -72,11 +72,12 @@ export default function LoginScreen() {
 
     const handleRegister = () => {
         console.log('Register pressed');
-        navigation.navigate('Auth', { screen: 'Verification' });
+        navigation.navigate('Auth', { screen: 'Registration' });
     };
 
     const handleContinueWithoutRegistration = () => {
         console.log('Continue without registration pressed');
+        navigation.navigate('Auth', { screen: 'Verification' });
     };
 
     return (

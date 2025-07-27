@@ -7,11 +7,13 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import LoginScreen from '../screens/auth/LoginScreen';
+import RegistrationScreen from '../screens/auth/RegistrationScreen';
 import VerificationScreen from '../screens/auth/VerificationScreen';
 
 export type AuthStackParamList = {
     Login: undefined;
     Verification: undefined;
+    Registration: undefined;
 };
 
 const Stack = createStackNavigator<AuthStackParamList>();
@@ -58,6 +60,10 @@ export default function AuthStack() {
                 <Stack.Screen
                     name="Verification"
                     component={VerificationScreen}
+                />
+                <Stack.Screen
+                    name="Registration"
+                    component={RegistrationScreen}
                 />
             </Stack.Navigator>
         </View>
