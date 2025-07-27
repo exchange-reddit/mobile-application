@@ -222,20 +222,18 @@ export default function RegistrationScreen() {
                         Checking username availability...
                     </Text>
                 ) : (
-                    usernameMessage !== '' && (
-                        <Text
-                            style={[
-                                styles.messageText,
-                                usernameMessage.includes('taken') ||
-                                usernameMessage.includes('required') ||
-                                usernameMessage.includes('Error')
-                                    ? styles.errorMessage
-                                    : styles.successMessage,
-                            ]}
-                        >
-                            {usernameMessage}
-                        </Text>
-                    )
+                    <Text
+                        style={[
+                            styles.messageText,
+                            usernameMessage.includes('taken') ||
+                            usernameMessage.includes('required') ||
+                            usernameMessage.includes('Error')
+                                ? styles.errorMessage
+                                : styles.successMessage,
+                        ]}
+                    >
+                        {usernameMessage}
+                    </Text>
                 )}
                 <TextInput
                     style={[FONTS.inputFont, INPUTS.oneLineInput]}
@@ -252,6 +250,14 @@ export default function RegistrationScreen() {
                             {lastnameMessage}
                         </Text>
                     )}
+                    {/* First Name Input */}
+                    {firstnameMessage !== '' && (
+                        <Text style={[styles.messageText, styles.errorMessage]}>
+                            {firstnameMessage}
+                        </Text>
+                    )}
+                </View>
+                <View style={VIEWS.oneLineView}>
                     <TextInput
                         style={[FONTS.inputFont, INPUTS.basicInput]}
                         placeholder="Last Name"
@@ -259,13 +265,6 @@ export default function RegistrationScreen() {
                         value={lastname}
                         onChangeText={setLastname} // Message update handled in useEffect
                     />
-
-                    {/* First Name Input */}
-                    {firstnameMessage !== '' && (
-                        <Text style={[styles.messageText, styles.errorMessage]}>
-                            {firstnameMessage}
-                        </Text>
-                    )}
                     <TextInput
                         style={[FONTS.inputFont, INPUTS.basicInput]}
                         placeholder="First Name"
