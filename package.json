@@ -5,8 +5,8 @@
     "scripts": {
         "start": "expo start",
         "reset-project": "node ./scripts/reset-project.js",
-        "android": "expo start --android",
-        "ios": "REACT_NATIVE_PACKAGER_HOSTNAME= expo start --ios --port 19006",
+        "android": "expo run:android",
+        "ios": "REACT_NATIVE_PACKAGER_HOSTNAME= expo start",
         "web": "expo start --web",
         "lint": "expo lint"
     },
