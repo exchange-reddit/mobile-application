@@ -34,13 +34,11 @@ import BUTTONS from '@/constants/Button';
 import VIEWS from '@/constants/View';
 import { Picker } from '@react-native-picker/picker';
 
-
-const { height } = Dimensions.get('window')
+const { height } = Dimensions.get('window');
 const marginHeight = height * 0.12;
 export default function RegistrationScreen() {
     // input data
-    
-    
+
     const [username, setUsername] = useState('');
     const [usernameMessage, setUsernameMessage] = useState(''); // Message for username
     const [isDuplicateCheckInProgress, setIsDuplicateCheckInProgress] =
@@ -55,7 +53,6 @@ export default function RegistrationScreen() {
     const [genderMessage, setGenderMessage] = useState(''); // Message for gender
     const [isContinueButtonDisabled, setIsContinueButtonDisabled] =
         useState(true);
-    
 
     // modal state
     const [genderModalVisible, setGenderModalVisible] = useState(false);
@@ -110,7 +107,7 @@ export default function RegistrationScreen() {
             }, 1500); // Reduced delay for quicker testing
         });
     };
-//
+    //
     // Shows the language picker modal
     const showLanguagePicker = () => {
         setLanguageModalVisible(true);
@@ -233,7 +230,7 @@ export default function RegistrationScreen() {
         <View style={styles.container}>
             <StatusBar barStyle="light-content" />
             <View style={styles.content}>
-                <View style={styles.continueContainer}> 
+                <View style={styles.continueContainer}>
                     <Text style={[FONTS.titleFont, styles.title]}>
                         Hello new user! 👋
                     </Text>
@@ -269,30 +266,53 @@ export default function RegistrationScreen() {
                         onChangeText={handleUsernameChange}
                     />
 
-                    <View style={VIEWS.oneLineView}>
+                    <View style={[VIEWS.oneLineView, { height: 20 }]}>
                         {/* Last Name Input */}
-                        {lastnameMessage !== '' && (
-                            <Text style={[styles.messageText, styles.errorMessage]}>
-                                {lastnameMessage}
-                            </Text>
-                        )}
+                        <View style={styles.leftMessage}>
+                            {lastnameMessage !== '' && (
+                                <Text
+                                    style={[
+                                        styles.messageText,
+                                        styles.errorMessage,
+                                    ]}
+                                >
+                                    {lastnameMessage}
+                                </Text>
+                            )}
+                        </View>
                         {/* First Name Input */}
-                        {firstnameMessage !== '' && (
-                            <Text style={[styles.messageText, styles.errorMessage]}>
-                                {firstnameMessage}
-                            </Text>
-                        )}
+                        <View style={styles.rightMessage}>
+                            {firstnameMessage !== '' && (
+                                <Text
+                                    style={[
+                                        styles.messageText,
+                                        styles.errorMessage,
+                                    ]}
+                                >
+                                    {firstnameMessage}
+                                </Text>
+                            )}
+                        </View>
                     </View>
+
                     <View style={VIEWS.oneLineView}>
                         <TextInput
-                            style={[FONTS.inputFont, INPUTS.basicInput]}
+                            style={[
+                                FONTS.inputFont,
+                                INPUTS.basicInput,
+                                styles.lastNameInput,
+                            ]}
                             placeholder="Last Name"
                             placeholderTextColor="rgba(255, 255, 255, 0.7)"
                             value={lastname}
                             onChangeText={setLastname} // Message update handled in useEffect
                         />
                         <TextInput
-                            style={[FONTS.inputFont, INPUTS.basicInput]}
+                            style={[
+                                FONTS.inputFont,
+                                INPUTS.basicInput,
+                                styles.firstNameInput,
+                            ]}
                             placeholder="First Name"
                             placeholderTextColor="rgba(255, 255, 255, 0.7)"
                             value={firstname}
@@ -300,143 +320,162 @@ export default function RegistrationScreen() {
                         />
                     </View>
 
-                    <View style={VIEWS.oneLineView}>
-                        {/* Preferred Language Picker */}
-                        <View id="languagePicker">
-                            {languageMessage !== '' && (
-                                <Text
-                                    style={[
-                                        styles.messageText,
-                                        styles.errorMessage,
-                                    ]}
-                                >
-                                    {languageMessage}
-                                </Text>
-                            )}
-                            <Pressable
-                                style={[BUTTONS.smallModalButton]}
-                                onPress={showLanguagePicker}
-                            >
-                                <Text style={[FONTS.inputFont]}>
-                                    {selectedLanguageValue !== ''
-                                        ? selectedLanguageValue
-                                        : 'Preferred Language'}
-                                </Text>
-                            </Pressable>
-                            <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={languageModalVisible}
-                                onRequestClose={hideLanguagePicker}
-                            >
-                                <Pressable
-                                    style={styles.centeredView}
-                                    onPress={hideLanguagePicker}
-                                >
-                                    <Pressable
-                                        style={styles.modalView}
-                                        onPress={(e) => e.stopPropagation()}
+                    <View>
+                        <View style={[VIEWS.oneLineView, { height: 20 }]}>
+                            <View style={styles.leftMessage}>
+                                {languageMessage !== '' && (
+                                    <Text
+                                        style={[
+                                            styles.messageText,
+                                            styles.errorMessage,
+                                        ]}
                                     >
-                                        <Picker
-                                            selectedValue={selectedLanguageValue}
-                                            onValueChange={handleLanguageChange}
-                                            style={styles.picker}
-                                            itemStyle={
-                                                Platform.OS === 'ios'
-                                                    ? styles.pickerItem
-                                                    : null
-                                            }
-                                        >
-                                            <Picker.Item
-                                                label="Korean"
-                                                value="Korean"
-                                            />
-                                            <Picker.Item
-                                                label="Swedish"
-                                                value="Swedish"
-                                            />
-                                            <Picker.Item
-                                                label="English"
-                                                value="English"
-                                            />
-                                        </Picker>
-                                    </Pressable>
-                                </Pressable>
-                            </Modal>
+                                        {languageMessage}
+                                    </Text>
+                                )}
+                            </View>
+                            <View style={styles.rightMessage}>
+                                {genderMessage !== '' && (
+                                    <Text
+                                        style={[
+                                            styles.messageText,
+                                            styles.errorMessage,
+                                        ]}
+                                    >
+                                        {genderMessage}
+                                    </Text>
+                                )}
+                            </View>
                         </View>
-
-                        {/* Gender Picker */}
-                        <View id="genderPicker">
-                            {genderMessage !== '' && (
-                                <Text
-                                    style={[
-                                        styles.messageText,
-                                        styles.errorMessage,
-                                    ]}
-                                >
-                                    {genderMessage}
-                                </Text>
-                            )}
-                            <Pressable
-                                style={[BUTTONS.smallModalButton]}
-                                onPress={showGenderPicker}
-                            >
-                                <Text style={FONTS.inputFont}>
-                                    {selectedGenderValue !== ''
-                                        ? selectedGenderValue
-                                        : 'Gender'}
-                                </Text>
-                            </Pressable>
-                            <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={genderModalVisible}
-                                onRequestClose={hideGenderPicker}
+                        <View style={VIEWS.oneLineView}>
+                            {/* Preferred Language Picker */}
+                            <View
+                                id="languagePicker"
+                                style={styles.languagePicker}
                             >
                                 <Pressable
-                                    style={styles.centeredView}
-                                    onPress={hideGenderPicker}
+                                    style={[BUTTONS.smallModalButton]}
+                                    onPress={showLanguagePicker}
+                                >
+                                    <Text style={[FONTS.inputFont]}>
+                                        {selectedLanguageValue !== ''
+                                            ? selectedLanguageValue
+                                            : 'Preferred Language'}
+                                    </Text>
+                                </Pressable>
+                                <Modal
+                                    animationType="slide"
+                                    transparent={true}
+                                    visible={languageModalVisible}
+                                    onRequestClose={hideLanguagePicker}
                                 >
                                     <Pressable
-                                        style={styles.modalView}
-                                        onPress={(e) => e.stopPropagation()}
+                                        style={styles.centeredView}
+                                        onPress={hideLanguagePicker}
                                     >
-                                        <Picker
-                                            selectedValue={selectedGenderValue}
-                                            onValueChange={handleGenderChange}
-                                            style={styles.picker}
-                                            itemStyle={
-                                                Platform.OS === 'ios'
-                                                    ? styles.pickerItem
-                                                    : null
-                                            }
+                                        <Pressable
+                                            style={styles.modalView}
+                                            onPress={(e) => e.stopPropagation()}
                                         >
-                                            <Picker.Item
-                                                label="Male"
-                                                value="Male"
-                                            />
-                                            <Picker.Item
-                                                label="Female"
-                                                value="Female"
-                                            />
-                                            <Picker.Item
-                                                label="Non-binary"
-                                                value="Non-binary"
-                                            />
-                                        </Picker>
+                                            <Picker
+                                                selectedValue={
+                                                    selectedLanguageValue
+                                                }
+                                                onValueChange={
+                                                    handleLanguageChange
+                                                }
+                                                style={styles.picker}
+                                                itemStyle={
+                                                    Platform.OS === 'ios'
+                                                        ? styles.pickerItem
+                                                        : null
+                                                }
+                                            >
+                                                <Picker.Item
+                                                    label="Korean"
+                                                    value="Korean"
+                                                />
+                                                <Picker.Item
+                                                    label="Swedish"
+                                                    value="Swedish"
+                                                />
+                                                <Picker.Item
+                                                    label="English"
+                                                    value="English"
+                                                />
+                                            </Picker>
+                                        </Pressable>
                                     </Pressable>
+                                </Modal>
+                            </View>
+
+                            {/* Gender Picker */}
+                            <View id="genderPicker" style={styles.genderPicker}>
+                                <Pressable
+                                    style={[BUTTONS.smallModalButton]}
+                                    onPress={showGenderPicker}
+                                >
+                                    <Text style={FONTS.inputFont}>
+                                        {selectedGenderValue !== ''
+                                            ? selectedGenderValue
+                                            : 'Gender'}
+                                    </Text>
                                 </Pressable>
-                            </Modal>
+                                <Modal
+                                    animationType="slide"
+                                    transparent={true}
+                                    visible={genderModalVisible}
+                                    onRequestClose={hideGenderPicker}
+                                >
+                                    <Pressable
+                                        style={styles.centeredView}
+                                        onPress={hideGenderPicker}
+                                    >
+                                        <Pressable
+                                            style={styles.modalView}
+                                            onPress={(e) => e.stopPropagation()}
+                                        >
+                                            <Picker
+                                                selectedValue={
+                                                    selectedGenderValue
+                                                }
+                                                onValueChange={
+                                                    handleGenderChange
+                                                }
+                                                style={styles.picker}
+                                                itemStyle={
+                                                    Platform.OS === 'ios'
+                                                        ? styles.pickerItem
+                                                        : null
+                                                }
+                                            >
+                                                <Picker.Item
+                                                    label="Male"
+                                                    value="Male"
+                                                />
+                                                <Picker.Item
+                                                    label="Female"
+                                                    value="Female"
+                                                />
+                                                <Picker.Item
+                                                    label="Non-binary"
+                                                    value="Non-binary"
+                                                />
+                                            </Picker>
+                                        </Pressable>
+                                    </Pressable>
+                                </Modal>
+                            </View>
                         </View>
                     </View>
                 </View>
-                <View style={styles.continueContainer}> 
+                <View style={styles.continueContainer}>
                     <Pressable
                         style={[
                             isContinueButtonDisabled
                                 ? BUTTONS.bigButtonDisabled
                                 : BUTTONS.bigButton,
-                                styles.continueButton
+                            styles.continueButton,
                         ]}
                         disabled={isContinueButtonDisabled}
                         onPress={handleContinuePress}
@@ -455,16 +494,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     formContainer: {
-        
-        flex: 1, 
-        justifyContent: "space-between"
-    }, 
+        flex: 1.5,
+        justifyContent: 'space-between',
+    },
     continueContainer: {
-        flex: 1
+        flex: 1,
     },
     continueButton: {
-        marginTop: marginHeight
-    }, 
+        marginTop: marginHeight,
+    },
 
     content: {
         flex: 1,
@@ -524,6 +562,24 @@ const styles = StyleSheet.create({
         marginBottom: 4,
         alignSelf: 'flex-start',
         marginLeft: 8, // Align with input padding
+    },
+    lastNameInput: {
+        flex: 1,
+    },
+    firstNameInput: {
+        flex: 2,
+    },
+    leftMessage: {
+        flex: 1,
+    },
+    rightMessage: {
+        // flex: 1,
+    },
+    languagePicker: {
+        flex: 1,
+    },
+    genderPicker: {
+        flex: 1,
     },
     errorMessage: {
         color: '#FF6347', // Tomato red for errors
