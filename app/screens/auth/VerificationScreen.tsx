@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
+    Dimensions,
     KeyboardAvoidingView,
     Platform,
     SafeAreaView,
@@ -14,8 +15,12 @@ import {
     TextInput,
     TextInputProps,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
+
+
+
+
 
 import {
     CodeField,
@@ -25,16 +30,20 @@ import {
 } from 'react-native-confirmation-code-field';
 
 import { useRegistrationStore } from '@/libs/registration/registrationStore';
+// import { ConfirmAnimation } from '@/libs/ConfirmAnimation';
 import { ScrollView } from 'react-native-gesture-handler';
 
 // --- Constants ---
+
+
 const CELL_COUNT = 5;
 const VERIFICATION_TYPE_UNI_EMAIL = 1;
-
+const { width, height } = Dimensions.get('window');
 const autoComplete = Platform.select<TextInputProps['autoComplete']>({
     android: 'sms-otp',
     default: 'one-time-code',
 });
+
 
 export default function VerificationScreen() {
     // --- Form Data States ---
@@ -469,6 +478,7 @@ export default function VerificationScreen() {
                                             !isHomeUniCodeVerified
                                         }
                                     />
+                                    <View style={{ width: 100, alignItems: 'flex-end' }}>
                                     {!isHomeUniCodeVerified ? (
                                         <TouchableOpacity
                                             style={[BUTTONS.smallButton]}
@@ -501,26 +511,45 @@ export default function VerificationScreen() {
                                             Confirmed!
                                         </Text>
                                     )}
-                                </View>
-                                <SafeAreaView style={styles.root}>
-                                    {!isHomeUniCodeVerified && (
-                                        <CodeField
-                                            ref={refHome}
-                                            {...homeUniProps}
-                                            value={homeUniCode}
-                                            onChangeText={setHomeUniCode}
-                                            cellCount={CELL_COUNT}
-                                            rootStyle={styles.codeFieldRoot}
-                                            keyboardType="number-pad"
-                                            textContentType="oneTimeCode"
-                                            autoComplete={autoComplete}
-                                            testID="home-code-input"
-                                            // Disable input while verifying or if already verified
-                                            editable={
-                                                !isVerifyingHomeCode &&
-                                                !isHomeUniCodeVerified
-                                            }
-                                            renderCell={({
+                                </TouchableOpacity>
+                            ) : (
+                                <Text style={[styles.confirmedText]}>
+                                    Confirmed!
+                                </Text>
+                            )}
+                            </View>
+
+                        </View>
+                        <SafeAreaView style={styles.root}>
+                            {!isHomeUniCodeVerified && (
+                                <CodeField
+                                    ref={refHome}
+                                    {...homeUniProps}
+                                    value={homeUniCode}
+                                    onChangeText={setHomeUniCode}
+                                    cellCount={CELL_COUNT}
+                                    rootStyle={styles.codeFieldRoot}
+                                    keyboardType="number-pad"
+                                    textContentType="oneTimeCode"
+                                    autoComplete={autoComplete}
+                                    testID="home-code-input"
+                                    // Disable input while verifying or if already verified
+                                    editable={
+                                        !isVerifyingHomeCode &&
+                                        !isHomeUniCodeVerified
+                                    }
+                                    renderCell={({
+                                        index,
+                                        symbol,
+                                        isFocused,
+                                    }) => (
+                                        <Text
+                                            key={index}
+                                            style={[
+                                                styles.cell,
+                                                isFocused && styles.focusCell,
+                                            ]}
+                                            onLayout={getExchangeUniCellOnLayoutHandler(
                                                 index,
                                                 symbol,
                                                 isFocused,
@@ -542,27 +571,76 @@ export default function VerificationScreen() {
                                                         ))}
                                                 </Text>
                                             )}
+                                        >
+                                            {symbol ||
+                                                (isFocused && <Cursor />)}
+                                        </Text>
+                                    )}
+                                />
+                            )}
+                        </SafeAreaView>
+                    </View>
+
+                    {/* Exchange University Email Section */}
+                    <View>
+                        <View style={styles.line}>
+                            <TextInput
+                                style={[
+                                    FONTS.inputFont,
+                                    INPUTS.lineWithButtonInput,
+                                    styles.emailInput,
+                                ]}
+                                placeholder="Exchange University Email"
+                                placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                                value={exchangeUniversityEmail}
+                                onChangeText={setExchangeUniversityEmail}
+                                // Disable input if sending code or already verified
+                                editable={
+                                    !isSendingExchangeCode &&
+                                    !isExchangeUniCodeVerified
+                                }
+                            />
+
+                            <View style={{ width: 100, alignItems: 'flex-end' }}>
+                            {!isExchangeUniCodeVerified ? (
+                                <TouchableOpacity
+                                    style={[BUTTONS.smallButton]}
+                                    onPress={handleSendExchangeUniversityCode}
+                                    // Disable button when sending code or already verified
+                                    disabled={
+                                        isSendingExchangeCode ||
+                                        isExchangeUniCodeVerified
+                                    }
+                                >
+                                    {isSendingExchangeCode ? (
+                                        <ActivityIndicator
+                                            size="small"
+                                            color="#fff"
                                         />
                                     )}
-                                </SafeAreaView>
+                                </TouchableOpacity>
+                            ) : (
+                                <Text style={[styles.confirmedText]}>
+                                    Confirmed!
+                                </Text>
+                            )}
                             </View>
-
-                            {/* Exchange University Email Section */}
-                            <View>
-                                <View style={styles.line}>
-                                    <TextInput
-                                        style={[
-                                            FONTS.inputFont,
-                                            INPUTS.lineWithButtonInput,
-                                            styles.emailInput,
-                                        ]}
-                                        placeholder="Exchange University Email"
-                                        placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                                        value={exchangeUniversityEmail}
-                                        onChangeText={
-                                            setExchangeUniversityEmail
-                                        }
-                                        // Disable input if sending code or already verified
+                        </View>
+                        <SafeAreaView style={styles.root}>
+                            <View style={styles.codeFieldContainer}>
+                                {!isExchangeUniCodeVerified && (
+                                    <CodeField
+                                        ref={refExchange}
+                                        {...exchangeUniProps}
+                                        value={exchangeUniCode}
+                                        onChangeText={setExchangeUniCode}
+                                        cellCount={CELL_COUNT}
+                                        rootStyle={styles.codeFieldRoot}
+                                        keyboardType="number-pad"
+                                        textContentType="oneTimeCode"
+                                        autoComplete={autoComplete}
+                                        testID="home-code-input"
+                                        // Disable input while verifying or if already verified
                                         editable={
                                             !isSendingExchangeCode &&
                                             !isExchangeUniCodeVerified
@@ -716,18 +794,23 @@ export default function VerificationScreen() {
     );
 }
 
+
+
+
 const styles = StyleSheet.create({
     bottomSection: {
         marginTop: 'auto',
+        
     },
     passwordGuideText: {
         color: '#D1C9EF',
         fontSize: 12,
-        marginTop: 60,
+        marginTop: 30,
         marginBottom: 10,
     },
     passwordInput: {
         marginBottom: 10,
+        
     },
     grainOverlay: {
         ...StyleSheet.absoluteFillObject,
@@ -753,18 +836,18 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         justifyContent: 'flex-start',
-        paddingTop: 160,
-        paddingBottom: 80,
-        paddingHorizontal: 20,
+        paddingTop: height * 0.2,
+        paddingBottom: height * 0.1,
+        paddingHorizontal: width * 0.05,
     },
     title: {
         textAlign: 'center',
-        marginTop: 40,
-        marginBottom: 60,
+        marginTop: height * 0.02,
+        marginBottom: height * 0.05,
     },
     line: {
         flexDirection: 'row',
-        padding: 10,
+        padding: width * 0.02,
         paddingVertical: 8,
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -777,7 +860,9 @@ const styles = StyleSheet.create({
     },
     emailInput: {
         flex: 1, // Allows TextInput to take available space
-        marginRight: 20,
+        marginRight: width * 0.02,
+        
+        
     },
     continueText: {
         color: 'white',
@@ -785,12 +870,13 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         opacity: 0.8,
         fontFamily: 'Inter-Medium',
+        
     },
     star: {
         position: 'absolute',
     },
     root: { padding: 20 },
-    codeFieldRoot: { marginTop: 10, alignSelf: 'flex-start', marginLeft: 10 },
+    codeFieldRoot: { marginTop: 10, alignSelf: 'flex-start', marginLeft: 10, marginBottom: 20,},
     cell: {
         width: 35,
         height: 35,
@@ -802,6 +888,7 @@ const styles = StyleSheet.create({
         color: '#6577EC',
         marginHorizontal: 6,
         borderRadius: 10,
+        
     },
     confirmedText: {
         color: '#D1C9EF',
