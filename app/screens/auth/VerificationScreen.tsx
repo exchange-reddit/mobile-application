@@ -6,6 +6,7 @@ import {
     ActivityIndicator,
     Alert,
     Dimensions,
+    KeyboardAvoidingView,
     Platform,
     SafeAreaView,
     StatusBar,
@@ -30,6 +31,7 @@ import {
 
 import { useRegistrationStore } from '@/libs/registration/registrationStore';
 // import { ConfirmAnimation } from '@/libs/ConfirmAnimation';
+import { ScrollView } from 'react-native-gesture-handler';
 
 // --- Constants ---
 
@@ -136,13 +138,50 @@ export default function VerificationScreen() {
         console.log('handleSendHomeUniversityCode pressed');
         setHomeUniMessage(''); // Clear previous messages
         setIsSendingHomeCode(true); // Start loading
-        console.log(
-            'Waiting for 1.5 seconds to simulate sending home uni code',
-        );
-        setTimeout(() => {
-            console.log('Home uni code sent');
+
+        try {
+            const response = await fetch(
+                `${process.env.EXPO_PUBLIC_LOGIN_EXCHANGE_SEND_CODE_URL}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: username,
+                        email: homeUniversityEmail.toLowerCase(), // Ensure lowercase
+                        verificationType: VERIFICATION_TYPE_UNI_EMAIL,
+                    }),
+                },
+            );
+
+            if (response.ok) {
+                const data = await response.text(); // Assuming plain text success response from backend
+                console.log('Home Uni Code sent successfully:', data);
+                setHomeUniMessage(
+                    'Verification code sent to your home university email!',
+                );
+            } else {
+                // Handle non-2xx responses (e.g., 400, 403, 500)
+                const errorMessage = await handleApiError(
+                    response,
+                    'Failed to send home university code. Please try again.',
+                );
+                setHomeUniMessage(errorMessage);
+            }
+        } catch (error) {
+            // Handle network errors (e.g., no internet connection, DNS issues)
+            console.error('Network error sending home uni code:', error);
+            setHomeUniMessage(
+                'Network error. Please check your internet connection.',
+            );
+            Alert.alert(
+                'Network Error',
+                'Could not connect to the server. Please check your internet connection.',
+            );
+        } finally {
             setIsSendingHomeCode(false); // End loading
-        }, 1500); // Wait 1.5 seconds
+        }
     };
 
     // --- API Call: Send Exchange University Code ---
@@ -150,13 +189,48 @@ export default function VerificationScreen() {
         console.log('handleSendExchangeUniversityCode pressed');
         setExchangeUniMessage(''); // Clear previous messages
         setIsSendingExchangeCode(true); // Start loading
-        console.log(
-            'Waiting for 1.5 seconds to simulate sending exchange uni code',
-        );
-        setTimeout(() => {
-            console.log('Exchange uni code sent');
+
+        try {
+            const response = await fetch(
+                `${process.env.EXPO_PUBLIC_LOGIN_EXCHANGE_SEND_CODE_URL}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: username,
+                        email: exchangeUniversityEmail.toLowerCase(), // Ensure lowercase
+                        verificationType: VERIFICATION_TYPE_UNI_EMAIL, // Use correct type
+                    }),
+                },
+            );
+
+            if (response.ok) {
+                const data = await response.text(); // Assuming plain text success response from backend
+                console.log('Exchange Uni Code sent successfully:', data);
+                setExchangeUniMessage(
+                    'Verification code sent to your exchange university email!',
+                );
+            } else {
+                const errorMessage = await handleApiError(
+                    response,
+                    'Failed to send exchange university code. Please try again.',
+                );
+                setExchangeUniMessage(errorMessage);
+            }
+        } catch (error) {
+            console.error('Network error sending exchange uni code:', error);
+            setExchangeUniMessage(
+                'Network error. Please check your internet connection.',
+            );
+            Alert.alert(
+                'Network Error',
+                'Could not connect to the server. Please check your internet connection.',
+            );
+        } finally {
             setIsSendingExchangeCode(false); // End loading
-        }, 1500); // Wait 1.5 seconds
+        }
     };
 
     // --- API Call: Verify Home University Code ---
@@ -177,13 +251,49 @@ export default function VerificationScreen() {
             { homeUniCode, email: homeUniversityEmail.toLowerCase() },
         );
 
-        setTimeout(() => {
-            console.log('Verifying home uni code...');
-        }, 1500); // Wait 1.5 seconds
+        try {
+            const response = await fetch(
+                `${process.env.EXPO_PUBLIC_EXCHANGE_VERIFICATION_URL}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        code: homeUniCode,
+                        email: homeUniversityEmail.toLowerCase(),
+                        verificationType: VERIFICATION_TYPE_UNI_EMAIL,
+                    }),
+                },
+            );
 
-        setIsHomeUniCodeVerified(true);
-        console.log('Home uni code verified.');
-        setIsVerifyingHomeCode(false); // End loading
+            if (response.ok) {
+                const data = await response.json(); // Assuming JSON success response for verification
+                console.log('Home Uni Code Verification successful:', data);
+                setIsHomeUniCodeVerified(true);
+                setHomeUniMessage('Home University email confirmed!');
+            } else {
+                const errorMessage = await handleApiError(
+                    response,
+                    'Failed to verify home university code. Please check the code and try again.',
+                );
+                setHomeUniMessage(errorMessage);
+                setIsHomeUniCodeVerified(false); // Reset verified state on error
+                setHomeUniCode('');
+            }
+        } catch (error) {
+            console.error('Network error verifying home uni code:', error);
+            setHomeUniMessage(
+                'Network error during verification. Please check connection.',
+            );
+            Alert.alert(
+                'Network Error',
+                'Could not connect to the server for verification. Please try again.',
+            );
+            setIsHomeUniCodeVerified(false);
+        } finally {
+            setIsVerifyingHomeCode(false); // End loading
+        }
     };
 
     // --- API Call: Verify Exchange University Code ---
@@ -207,13 +317,49 @@ export default function VerificationScreen() {
             },
         );
 
-        setTimeout(() => {
-            console.log('Verifying exchange uni code...');
-            // Navigate to another screen, show a success message, etc.
-        }, 1500); // Wait 1.5 seconds
-        setIsExchangeUniCodeVerified(true);
-        console.log('Exchange uni code verified.');
-        setIsVerifyingExchangeCode(false); // End loading
+        try {
+            const response = await fetch(
+                `${process.env.EXPO_PUBLIC_EXCHANGE_VERIFICATION_URL}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        code: exchangeUniCode,
+                        email: exchangeUniversityEmail.toLowerCase(),
+                        verificationType: VERIFICATION_TYPE_UNI_EMAIL, // Use correct type
+                    }),
+                },
+            );
+
+            if (response.ok) {
+                const data = await response.json(); // Assuming JSON success response for verification
+                console.log('Exchange Uni Code Verification successful:', data);
+                setIsExchangeUniCodeVerified(true);
+                setExchangeUniMessage('Exchange University email confirmed!');
+            } else {
+                const errorMessage = await handleApiError(
+                    response,
+                    'Failed to verify exchange university code. Please check the code and try again.',
+                );
+                setExchangeUniMessage(errorMessage);
+                setIsExchangeUniCodeVerified(false); // Reset verified state on error
+                setExchangeUniCode('');
+            }
+        } catch (error) {
+            console.error('Network error verifying exchange uni code:', error);
+            setExchangeUniMessage(
+                'Network error during verification. Please check connection.',
+            );
+            Alert.alert(
+                'Network Error',
+                'Could not connect to the server for verification. Please try again.',
+            );
+            setIsExchangeUniCodeVerified(false);
+        } finally {
+            setIsVerifyingExchangeCode(false); // End loading
+        }
     };
 
     // --- useEffect for Password Validation Feedback ---
@@ -308,45 +454,61 @@ export default function VerificationScreen() {
                 <Text style={[FONTS.titleFont, styles.title]}>
                     Verification
                 </Text>
-                <View>
-                    {/* Home University Email Section */}
-                    <View>
-                        <View style={styles.line}>
-                            <TextInput
-                                style={[
-                                    FONTS.inputFont,
-                                    INPUTS.lineWithButtonInput,
-                                    styles.emailInput,
-                                ]}
-                                placeholder="Home University Email"
-                                placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                                value={homeUniversityEmail}
-                                onChangeText={setHomeUniversityEmail}
-                                // Disable input if sending code or already verified
-                                editable={
-                                    !isSendingHomeCode && !isHomeUniCodeVerified
-                                }
-                            />
-
-                            <View style={{ width: 100, alignItems: 'flex-end' }}>
-                            {!isHomeUniCodeVerified ? (
-                                <TouchableOpacity
-                                    style={[BUTTONS.smallButton]}
-                                    onPress={handleSendHomeUniversityCode}
-                                    // Disable button when sending code or already verified
-                                    disabled={
-                                        isSendingHomeCode ||
-                                        isHomeUniCodeVerified
-                                    }
-                                >
-                                    {isSendingHomeCode ? (
-                                        <ActivityIndicator
-                                            size="small"
-                                            color="#fff"
-                                        />
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                >
+                    <ScrollView>
+                        <View>
+                            {/* Home University Email Section */}
+                            <View>
+                                <View style={styles.line}>
+                                    <TextInput
+                                        style={[
+                                            FONTS.inputFont,
+                                            INPUTS.lineWithButtonInput,
+                                            styles.emailInput,
+                                        ]}
+                                        placeholder="Home University Email"
+                                        placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                                        value={homeUniversityEmail}
+                                        onChangeText={setHomeUniversityEmail}
+                                        // Disable input if sending code or already verified
+                                        editable={
+                                            !isSendingHomeCode &&
+                                            !isHomeUniCodeVerified
+                                        }
+                                    />
+                                    <View style={{ width: 100, alignItems: 'flex-end' }}>
+                                    {!isHomeUniCodeVerified ? (
+                                        <TouchableOpacity
+                                            style={[BUTTONS.smallButton]}
+                                            onPress={
+                                                handleSendHomeUniversityCode
+                                            }
+                                            // Disable button when sending code or already verified
+                                            disabled={
+                                                isSendingHomeCode ||
+                                                isHomeUniCodeVerified
+                                            }
+                                        >
+                                            {isSendingHomeCode ? (
+                                                <ActivityIndicator
+                                                    size="small"
+                                                    color="#fff"
+                                                />
+                                            ) : (
+                                                <Text
+                                                    style={[
+                                                        FONTS.smallButtonFont,
+                                                    ]}
+                                                >
+                                                    Send Code
+                                                </Text>
+                                            )}
+                                        </TouchableOpacity>
                                     ) : (
-                                        <Text style={[FONTS.smallButtonFont]}>
-                                            Send Code
+                                        <Text style={[styles.confirmedText]}>
+                                            Confirmed!
                                         </Text>
                                     )}
                                 </TouchableOpacity>
@@ -389,6 +551,25 @@ export default function VerificationScreen() {
                                             ]}
                                             onLayout={getExchangeUniCellOnLayoutHandler(
                                                 index,
+                                                symbol,
+                                                isFocused,
+                                            }) => (
+                                                <Text
+                                                    key={index}
+                                                    style={[
+                                                        styles.cell,
+                                                        isFocused &&
+                                                            styles.focusCell,
+                                                    ]}
+                                                    onLayout={getExchangeUniCellOnLayoutHandler(
+                                                        index,
+                                                    )}
+                                                >
+                                                    {symbol ||
+                                                        (isFocused && (
+                                                            <Cursor />
+                                                        ))}
+                                                </Text>
                                             )}
                                         >
                                             {symbol ||
@@ -436,10 +617,6 @@ export default function VerificationScreen() {
                                             size="small"
                                             color="#fff"
                                         />
-                                    ) : (
-                                        <Text style={[FONTS.smallButtonFont]}>
-                                            Send Code
-                                        </Text>
                                     )}
                                 </TouchableOpacity>
                             ) : (
@@ -465,94 +642,153 @@ export default function VerificationScreen() {
                                         testID="home-code-input"
                                         // Disable input while verifying or if already verified
                                         editable={
-                                            !isVerifyingExchangeCode &&
+                                            !isSendingExchangeCode &&
                                             !isExchangeUniCodeVerified
                                         }
-                                        renderCell={({
-                                            index,
-                                            symbol,
-                                            isFocused,
-                                        }) => (
-                                            <Text
-                                                key={index}
-                                                style={[
-                                                    styles.cell,
-                                                    isFocused &&
-                                                        styles.focusCell,
-                                                ]}
-                                                onLayout={getHomeUniCellOnLayoutHandler(
-                                                    index,
-                                                )}
-                                            >
-                                                {symbol ||
-                                                    (isFocused && <Cursor />)}
-                                            </Text>
-                                        )}
                                     />
-                                )}
+                                    {!isExchangeUniCodeVerified ? (
+                                        <TouchableOpacity
+                                            style={[BUTTONS.smallButton]}
+                                            onPress={
+                                                handleSendExchangeUniversityCode
+                                            }
+                                            // Disable button when sending code or already verified
+                                            disabled={
+                                                isSendingExchangeCode ||
+                                                isExchangeUniCodeVerified
+                                            }
+                                        >
+                                            {isSendingExchangeCode ? (
+                                                <ActivityIndicator
+                                                    size="small"
+                                                    color="#fff"
+                                                />
+                                            ) : (
+                                                <Text
+                                                    style={[
+                                                        FONTS.smallButtonFont,
+                                                    ]}
+                                                >
+                                                    Send Code
+                                                </Text>
+                                            )}
+                                        </TouchableOpacity>
+                                    ) : (
+                                        <Text style={[styles.confirmedText]}>
+                                            Confirmed!
+                                        </Text>
+                                    )}
+                                </View>
+                                <SafeAreaView style={styles.root}>
+                                    <View style={styles.codeFieldContainer}>
+                                        {!isExchangeUniCodeVerified && (
+                                            <CodeField
+                                                ref={refExchange}
+                                                {...exchangeUniProps}
+                                                value={exchangeUniCode}
+                                                onChangeText={
+                                                    setExchangeUniCode
+                                                }
+                                                cellCount={CELL_COUNT}
+                                                rootStyle={styles.codeFieldRoot}
+                                                keyboardType="number-pad"
+                                                textContentType="oneTimeCode"
+                                                autoComplete={autoComplete}
+                                                testID="home-code-input"
+                                                // Disable input while verifying or if already verified
+                                                editable={
+                                                    !isVerifyingExchangeCode &&
+                                                    !isExchangeUniCodeVerified
+                                                }
+                                                renderCell={({
+                                                    index,
+                                                    symbol,
+                                                    isFocused,
+                                                }) => (
+                                                    <Text
+                                                        key={index}
+                                                        style={[
+                                                            styles.cell,
+                                                            isFocused &&
+                                                                styles.focusCell,
+                                                        ]}
+                                                        onLayout={getHomeUniCellOnLayoutHandler(
+                                                            index,
+                                                        )}
+                                                    >
+                                                        {symbol ||
+                                                            (isFocused && (
+                                                                <Cursor />
+                                                            ))}
+                                                    </Text>
+                                                )}
+                                            />
+                                        )}
+                                    </View>
+                                </SafeAreaView>
                             </View>
-                        </SafeAreaView>
-                    </View>
-                </View>
+                        </View>
 
-                {/* Password Section */}
-                <Text style={styles.passwordGuideText}>
-                    Your password must be at least 8 characters long, contain a
-                    number, and a special character.
-                </Text>
-                <TextInput
-                    style={[
-                        FONTS.inputFont,
-                        INPUTS.oneLineInput,
-                        styles.passwordInput,
-                    ]}
-                    placeholder="Password"
-                    placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                />
-                <TextInput
-                    style={[
-                        FONTS.inputFont,
-                        INPUTS.oneLineInput,
-                        styles.passwordInput,
-                    ]}
-                    placeholder="Confirm Password"
-                    placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                    value={passwordConfirm}
-                    onChangeText={setPasswordConfirm}
-                    secureTextEntry
-                />
-                {/* Password validation message */}
-                {passwordMessage ? (
-                    <Text
-                        style={[
-                            styles.messageText,
-                            arePasswordsMatching && isPasswordValid
-                                ? styles.successMessage
-                                : styles.errorMessage,
-                        ]}
-                    >
-                        {passwordMessage}
-                    </Text>
-                ) : null}
+                        {/* Password Section */}
+                        <Text style={styles.passwordGuideText}>
+                            Your password must be at least 8 characters long,
+                            contain a number, and a special character.
+                        </Text>
+                        <TextInput
+                            style={[
+                                FONTS.inputFont,
+                                INPUTS.oneLineInput,
+                                styles.passwordInput,
+                            ]}
+                            placeholder="Password"
+                            placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry
+                        />
+                        <TextInput
+                            style={[
+                                FONTS.inputFont,
+                                INPUTS.oneLineInput,
+                                styles.passwordInput,
+                            ]}
+                            placeholder="Confirm Password"
+                            placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                            value={passwordConfirm}
+                            onChangeText={setPasswordConfirm}
+                            secureTextEntry
+                        />
+                        {/* Password validation message */}
+                        {passwordMessage ? (
+                            <Text
+                                style={[
+                                    styles.messageText,
+                                    arePasswordsMatching && isPasswordValid
+                                        ? styles.successMessage
+                                        : styles.errorMessage,
+                                ]}
+                            >
+                                {passwordMessage}
+                            </Text>
+                        ) : null}
 
-                {/* Continue Button */}
-                <TouchableOpacity
-                    style={[BUTTONS.bigButton]}
-                    onPress={handleContinue}
-                    // Disable if any API call is in progress or if verification/password conditions are not met
-                    disabled={
-                        overallLoading ||
-                        !isHomeUniCodeVerified ||
-                        !isExchangeUniCodeVerified ||
-                        !isPasswordValid ||
-                        !arePasswordsMatching
-                    }
-                >
-                    <Text style={[FONTS.bigButtonFont]}>Continue</Text>
-                </TouchableOpacity>
+                        {/* Continue Button */}
+                        <TouchableOpacity
+                            style={[BUTTONS.bigButton]}
+                            onPress={handleContinue}
+                            // Disable if any API call is in progress or if verification/password conditions are not met
+                            disabled={
+                                overallLoading ||
+                                !isHomeUniCodeVerified ||
+                                !isExchangeUniCodeVerified ||
+                                !isPasswordValid ||
+                                !arePasswordsMatching
+                            }
+                        >
+                            <Text style={[FONTS.bigButtonFont]}>Continue</Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </View>
         </View>
     );
