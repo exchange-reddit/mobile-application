@@ -6,7 +6,7 @@
         "start": "expo start",
         "reset-project": "node ./scripts/reset-project.js",
         "android": "expo run:android",
-        "ios": "REACT_NATIVE_PACKAGER_HOSTNAME= expo start",
+        "ios": "REACT_NATIVE_PACKAGER_HOSTNAME= expo start --port 19000",
         "web": "expo start --web",
         "lint": "expo lint"
     },

@@ -15,12 +15,8 @@ import {
     TextInput,
     TextInputProps,
     TouchableOpacity,
-    View
+    View,
 } from 'react-native';
-
-
-
-
 
 import {
     CodeField,
@@ -35,7 +31,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 // --- Constants ---
 
-
 const CELL_COUNT = 5;
 const VERIFICATION_TYPE_UNI_EMAIL = 1;
 const { width, height } = Dimensions.get('window');
@@ -43,7 +38,6 @@ const autoComplete = Platform.select<TextInputProps['autoComplete']>({
     android: 'sms-otp',
     default: 'one-time-code',
 });
-
 
 export default function VerificationScreen() {
     // --- Form Data States ---
@@ -458,37 +452,41 @@ export default function VerificationScreen() {
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 >
                     <ScrollView>
+                        {/* Home University Email Section */}
                         <View>
-                            {/* Home University Email Section */}
-                            <View>
-                                <View style={styles.line}>
-                                    <TextInput
-                                        style={[
-                                            FONTS.inputFont,
-                                            INPUTS.lineWithButtonInput,
-                                            styles.emailInput,
-                                        ]}
-                                        placeholder="Home University Email"
-                                        placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                                        value={homeUniversityEmail}
-                                        onChangeText={setHomeUniversityEmail}
-                                        // Disable input if sending code or already verified
-                                        editable={
-                                            !isSendingHomeCode &&
-                                            !isHomeUniCodeVerified
-                                        }
-                                    />
-                                    <View style={{ width: 100, alignItems: 'flex-end' }}>
+                            <View style={styles.line}>
+                                <TextInput
+                                    style={[
+                                        FONTS.inputFont,
+                                        INPUTS.lineWithButtonInput,
+                                        styles.emailInput,
+                                    ]}
+                                    placeholder="Home University Email"
+                                    placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                                    value={homeUniversityEmail}
+                                    onChangeText={setHomeUniversityEmail}
+                                    editable={
+                                        !isSendingHomeCode &&
+                                        !isHomeUniCodeVerified
+                                    }
+                                />
+                                <View
+                                    style={{
+                                        width: 100,
+                                        alignItems: 'flex-end',
+                                    }}
+                                >
                                     {!isHomeUniCodeVerified ? (
                                         <TouchableOpacity
                                             style={[BUTTONS.smallButton]}
                                             onPress={
                                                 handleSendHomeUniversityCode
                                             }
-                                            // Disable button when sending code or already verified
                                             disabled={
                                                 isSendingHomeCode ||
-                                                isHomeUniCodeVerified
+                                                isHomeUniCodeVerified ||
+                                                isVerifyingHomeCode ||
+                                                isVerifyingExchangeCode
                                             }
                                         >
                                             {isSendingHomeCode ? (
@@ -511,151 +509,85 @@ export default function VerificationScreen() {
                                             Confirmed!
                                         </Text>
                                     )}
-                                </TouchableOpacity>
-                            ) : (
-                                <Text style={[styles.confirmedText]}>
-                                    Confirmed!
-                                </Text>
-                            )}
+                                </View>
                             </View>
-
-                        </View>
-                        <SafeAreaView style={styles.root}>
-                            {!isHomeUniCodeVerified && (
-                                <CodeField
-                                    ref={refHome}
-                                    {...homeUniProps}
-                                    value={homeUniCode}
-                                    onChangeText={setHomeUniCode}
-                                    cellCount={CELL_COUNT}
-                                    rootStyle={styles.codeFieldRoot}
-                                    keyboardType="number-pad"
-                                    textContentType="oneTimeCode"
-                                    autoComplete={autoComplete}
-                                    testID="home-code-input"
-                                    // Disable input while verifying or if already verified
-                                    editable={
-                                        !isVerifyingHomeCode &&
-                                        !isHomeUniCodeVerified
-                                    }
-                                    renderCell={({
-                                        index,
-                                        symbol,
-                                        isFocused,
-                                    }) => (
-                                        <Text
-                                            key={index}
-                                            style={[
-                                                styles.cell,
-                                                isFocused && styles.focusCell,
-                                            ]}
-                                            onLayout={getExchangeUniCellOnLayoutHandler(
-                                                index,
-                                                symbol,
-                                                isFocused,
-                                            }) => (
-                                                <Text
-                                                    key={index}
-                                                    style={[
-                                                        styles.cell,
-                                                        isFocused &&
-                                                            styles.focusCell,
-                                                    ]}
-                                                    onLayout={getExchangeUniCellOnLayoutHandler(
-                                                        index,
-                                                    )}
-                                                >
-                                                    {symbol ||
-                                                        (isFocused && (
-                                                            <Cursor />
-                                                        ))}
-                                                </Text>
-                                            )}
-                                        >
-                                            {symbol ||
-                                                (isFocused && <Cursor />)}
-                                        </Text>
-                                    )}
-                                />
-                            )}
-                        </SafeAreaView>
-                    </View>
-
-                    {/* Exchange University Email Section */}
-                    <View>
-                        <View style={styles.line}>
-                            <TextInput
-                                style={[
-                                    FONTS.inputFont,
-                                    INPUTS.lineWithButtonInput,
-                                    styles.emailInput,
-                                ]}
-                                placeholder="Exchange University Email"
-                                placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                                value={exchangeUniversityEmail}
-                                onChangeText={setExchangeUniversityEmail}
-                                // Disable input if sending code or already verified
-                                editable={
-                                    !isSendingExchangeCode &&
-                                    !isExchangeUniCodeVerified
-                                }
-                            />
-
-                            <View style={{ width: 100, alignItems: 'flex-end' }}>
-                            {!isExchangeUniCodeVerified ? (
-                                <TouchableOpacity
-                                    style={[BUTTONS.smallButton]}
-                                    onPress={handleSendExchangeUniversityCode}
-                                    // Disable button when sending code or already verified
-                                    disabled={
-                                        isSendingExchangeCode ||
-                                        isExchangeUniCodeVerified
-                                    }
-                                >
-                                    {isSendingExchangeCode ? (
-                                        <ActivityIndicator
-                                            size="small"
-                                            color="#fff"
-                                        />
-                                    )}
-                                </TouchableOpacity>
-                            ) : (
-                                <Text style={[styles.confirmedText]}>
-                                    Confirmed!
-                                </Text>
-                            )}
-                            </View>
-                        </View>
-                        <SafeAreaView style={styles.root}>
-                            <View style={styles.codeFieldContainer}>
-                                {!isExchangeUniCodeVerified && (
+                            <SafeAreaView style={styles.root}>
+                                {!isHomeUniCodeVerified && (
                                     <CodeField
-                                        ref={refExchange}
-                                        {...exchangeUniProps}
-                                        value={exchangeUniCode}
-                                        onChangeText={setExchangeUniCode}
+                                        ref={refHome}
+                                        {...homeUniProps}
+                                        value={homeUniCode}
+                                        onChangeText={setHomeUniCode}
                                         cellCount={CELL_COUNT}
                                         rootStyle={styles.codeFieldRoot}
                                         keyboardType="number-pad"
                                         textContentType="oneTimeCode"
                                         autoComplete={autoComplete}
                                         testID="home-code-input"
-                                        // Disable input while verifying or if already verified
                                         editable={
-                                            !isSendingExchangeCode &&
-                                            !isExchangeUniCodeVerified
+                                            !isVerifyingHomeCode &&
+                                            !isHomeUniCodeVerified
                                         }
+                                        renderCell={({
+                                            index,
+                                            symbol,
+                                            isFocused,
+                                        }) => (
+                                            <Text
+                                                key={index}
+                                                style={[
+                                                    styles.cell,
+                                                    isFocused &&
+                                                        styles.focusCell,
+                                                ]}
+                                                onLayout={getExchangeUniCellOnLayoutHandler(
+                                                    index,
+                                                )}
+                                            >
+                                                {symbol ||
+                                                    (isFocused && <Cursor />)}
+                                            </Text>
+                                        )}
                                     />
+                                )}
+                            </SafeAreaView>
+                        </View>
+
+                        {/* Exchange University Email Section */}
+                        <View>
+                            <View style={styles.line}>
+                                <TextInput
+                                    style={[
+                                        FONTS.inputFont,
+                                        INPUTS.lineWithButtonInput,
+                                        styles.emailInput,
+                                    ]}
+                                    placeholder="Exchange University Email"
+                                    placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                                    value={exchangeUniversityEmail}
+                                    onChangeText={setExchangeUniversityEmail}
+                                    editable={
+                                        !isSendingExchangeCode &&
+                                        !isExchangeUniCodeVerified
+                                    }
+                                />
+                                <View
+                                    style={{
+                                        width: 100,
+                                        alignItems: 'flex-end',
+                                    }}
+                                >
                                     {!isExchangeUniCodeVerified ? (
                                         <TouchableOpacity
                                             style={[BUTTONS.smallButton]}
                                             onPress={
                                                 handleSendExchangeUniversityCode
                                             }
-                                            // Disable button when sending code or already verified
                                             disabled={
                                                 isSendingExchangeCode ||
-                                                isExchangeUniCodeVerified
+                                                isExchangeUniCodeVerified ||
+                                                isVerifyingHomeCode ||
+                                                isVerifyingExchangeCode
                                             }
                                         >
                                             {isSendingExchangeCode ? (
@@ -679,54 +611,47 @@ export default function VerificationScreen() {
                                         </Text>
                                     )}
                                 </View>
-                                <SafeAreaView style={styles.root}>
-                                    <View style={styles.codeFieldContainer}>
-                                        {!isExchangeUniCodeVerified && (
-                                            <CodeField
-                                                ref={refExchange}
-                                                {...exchangeUniProps}
-                                                value={exchangeUniCode}
-                                                onChangeText={
-                                                    setExchangeUniCode
-                                                }
-                                                cellCount={CELL_COUNT}
-                                                rootStyle={styles.codeFieldRoot}
-                                                keyboardType="number-pad"
-                                                textContentType="oneTimeCode"
-                                                autoComplete={autoComplete}
-                                                testID="home-code-input"
-                                                // Disable input while verifying or if already verified
-                                                editable={
-                                                    !isVerifyingExchangeCode &&
-                                                    !isExchangeUniCodeVerified
-                                                }
-                                                renderCell={({
-                                                    index,
-                                                    symbol,
-                                                    isFocused,
-                                                }) => (
-                                                    <Text
-                                                        key={index}
-                                                        style={[
-                                                            styles.cell,
-                                                            isFocused &&
-                                                                styles.focusCell,
-                                                        ]}
-                                                        onLayout={getHomeUniCellOnLayoutHandler(
-                                                            index,
-                                                        )}
-                                                    >
-                                                        {symbol ||
-                                                            (isFocused && (
-                                                                <Cursor />
-                                                            ))}
-                                                    </Text>
-                                                )}
-                                            />
-                                        )}
-                                    </View>
-                                </SafeAreaView>
                             </View>
+                            <SafeAreaView style={styles.root}>
+                                {!isExchangeUniCodeVerified && (
+                                    <CodeField
+                                        ref={refExchange}
+                                        {...exchangeUniProps}
+                                        value={exchangeUniCode}
+                                        onChangeText={setExchangeUniCode}
+                                        cellCount={CELL_COUNT}
+                                        rootStyle={styles.codeFieldRoot}
+                                        keyboardType="number-pad"
+                                        textContentType="oneTimeCode"
+                                        autoComplete={autoComplete}
+                                        testID="exchange-code-input"
+                                        editable={
+                                            !isVerifyingExchangeCode &&
+                                            !isExchangeUniCodeVerified
+                                        }
+                                        renderCell={({
+                                            index,
+                                            symbol,
+                                            isFocused,
+                                        }) => (
+                                            <Text
+                                                key={index}
+                                                style={[
+                                                    styles.cell,
+                                                    isFocused &&
+                                                        styles.focusCell,
+                                                ]}
+                                                onLayout={getExchangeUniCellOnLayoutHandler(
+                                                    index,
+                                                )}
+                                            >
+                                                {symbol ||
+                                                    (isFocused && <Cursor />)}
+                                            </Text>
+                                        )}
+                                    />
+                                )}
+                            </SafeAreaView>
                         </View>
 
                         {/* Password Section */}
@@ -776,7 +701,6 @@ export default function VerificationScreen() {
                         <TouchableOpacity
                             style={[BUTTONS.bigButton]}
                             onPress={handleContinue}
-                            // Disable if any API call is in progress or if verification/password conditions are not met
                             disabled={
                                 overallLoading ||
                                 !isHomeUniCodeVerified ||
@@ -794,13 +718,9 @@ export default function VerificationScreen() {
     );
 }
 
-
-
-
 const styles = StyleSheet.create({
     bottomSection: {
         marginTop: 'auto',
-        
     },
     passwordGuideText: {
         color: '#D1C9EF',
@@ -810,7 +730,6 @@ const styles = StyleSheet.create({
     },
     passwordInput: {
         marginBottom: 10,
-        
     },
     grainOverlay: {
         ...StyleSheet.absoluteFillObject,
@@ -861,8 +780,6 @@ const styles = StyleSheet.create({
     emailInput: {
         flex: 1, // Allows TextInput to take available space
         marginRight: width * 0.02,
-        
-        
     },
     continueText: {
         color: 'white',
@@ -870,13 +787,17 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         opacity: 0.8,
         fontFamily: 'Inter-Medium',
-        
     },
     star: {
         position: 'absolute',
     },
     root: { padding: 20 },
-    codeFieldRoot: { marginTop: 10, alignSelf: 'flex-start', marginLeft: 10, marginBottom: 20,},
+    codeFieldRoot: {
+        marginTop: 10,
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+        marginBottom: 20,
+    },
     cell: {
         width: 35,
         height: 35,
@@ -888,7 +809,6 @@ const styles = StyleSheet.create({
         color: '#6577EC',
         marginHorizontal: 6,
         borderRadius: 10,
-        
     },
     confirmedText: {
         color: '#D1C9EF',
