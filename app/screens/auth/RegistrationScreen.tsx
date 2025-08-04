@@ -13,44 +13,26 @@ import {
     View,
 } from 'react-native';
 
-// {/* Continue Button */}
-//                 <TouchableOpacity
-//                     style={[BUTTONS.bigButton, styles.continueButton]}
-//                     onPress={handleContinue}
-//                     // Disable if any API call is in progress or if verification/password conditions are not met
-//                     disabled={
-//                         overallLoading ||
-//                         !isHomeUniCodeVerified ||
-//                         !isExchangeUniCodeVerified ||
-//                         !isPasswordValid ||
-//                         !arePasswordsMatching
-//                     }
-//                 >
-//                     <Text style={[FONTS.bigButtonFont]}>Continue</Text>
-//                 </TouchableOpacity>
-//         </View>
-
 import BUTTONS from '@/constants/Button';
-import VIEWS from '@/constants/View';
 import { Picker } from '@react-native-picker/picker';
 
-const { height } = Dimensions.get('window');
-const marginHeight = height * 0.12;
+const { height, width } = Dimensions.get('window');
+const marginHeight = height * 0.1;
+
 export default function RegistrationScreen() {
     // input data
-
     const [username, setUsername] = useState('');
-    const [usernameMessage, setUsernameMessage] = useState(''); // Message for username
+    const [usernameMessage, setUsernameMessage] = useState('');
     const [isDuplicateCheckInProgress, setIsDuplicateCheckInProgress] =
         useState(false);
     const [lastname, setLastname] = useState('');
-    const [lastnameMessage, setLastnameMessage] = useState(''); // Message for lastname
+    const [lastnameMessage, setLastnameMessage] = useState('');
     const [firstname, setFirstname] = useState('');
-    const [firstnameMessage, setFirstnameMessage] = useState(''); // Message for firstname
+    const [firstnameMessage, setFirstnameMessage] = useState('');
     const [selectedLanguageValue, setSelectedLanguageValue] = useState('');
-    const [languageMessage, setLanguageMessage] = useState(''); // Message for language
+    const [languageMessage, setLanguageMessage] = useState('');
     const [selectedGenderValue, setSelectedGenderValue] = useState('');
-    const [genderMessage, setGenderMessage] = useState(''); // Message for gender
+    const [genderMessage, setGenderMessage] = useState('');
     const [isContinueButtonDisabled, setIsContinueButtonDisabled] =
         useState(true);
 
@@ -58,22 +40,19 @@ export default function RegistrationScreen() {
     const [genderModalVisible, setGenderModalVisible] = useState(false);
     const [languageModalVisible, setLanguageModalVisible] = useState(false);
 
-    // Handles username input and checks for duplication asynchronously
     const handleUsernameChange = async (newUsername) => {
         setUsername(newUsername);
         if (newUsername.trim() === '') {
             setUsernameMessage('Username is required.');
-            setIsDuplicateCheckInProgress(false); // Ensure loading is off if input is empty
+            setIsDuplicateCheckInProgress(false);
             return;
         }
 
-        setUsernameMessage(''); // Clear previous message
-        setIsDuplicateCheckInProgress(true); // Set loading state to true
+        setUsernameMessage('');
+        setIsDuplicateCheckInProgress(true);
 
         try {
-            // Simulate an API call to check for username duplication
             const isDuplicate = await checkUsernameDuplicate(newUsername);
-
             if (isDuplicate) {
                 setUsernameMessage(
                     'Username already taken, please choose another.',
@@ -85,47 +64,39 @@ export default function RegistrationScreen() {
             console.error('Error checking username:', error);
             setUsernameMessage('Error checking username. Please try again.');
         } finally {
-            setIsDuplicateCheckInProgress(false); // Always set loading state to false after check
+            setIsDuplicateCheckInProgress(false);
         }
     };
 
-    // Simulates an asynchronous API call to check for username duplication
     const checkUsernameDuplicate = (usernameToCheck) => {
         return new Promise((resolve) => {
             setIsDuplicateCheckInProgress(true);
             setTimeout(() => {
-                // 'existingUser' is a simulated duplicate username
                 if (usernameToCheck === 'existingUser') {
                     console.log('Username already taken.');
-                    setIsDuplicateCheckInProgress(false);
-                    resolve(true); // Resolve with true if duplicate
+                    resolve(true);
                 } else {
                     console.log('Username is available.');
-                    setIsDuplicateCheckInProgress(false);
-                    resolve(false); // Resolve with false if available
+                    resolve(false);
                 }
-            }, 1500); // Reduced delay for quicker testing
+                setIsDuplicateCheckInProgress(false);
+            }, 1500);
         });
     };
-    //
-    // Shows the language picker modal
+
     const showLanguagePicker = () => {
         setLanguageModalVisible(true);
-        // Set a default value if nothing is selected when opening the picker
         if (selectedLanguageValue === '') {
             setSelectedLanguageValue('Korean');
         }
     };
 
-    // Hides the language picker modal
     const hideLanguagePicker = () => {
         setLanguageModalVisible(false);
     };
 
-    // Handles language selection from the picker
     const handleLanguageChange = (itemValue) => {
         setSelectedLanguageValue(itemValue);
-        // Clear or set message based on selection
         if (itemValue.trim() !== '') {
             setLanguageMessage('');
         } else {
@@ -133,24 +104,19 @@ export default function RegistrationScreen() {
         }
     };
 
-    // Shows the gender picker modal
     const showGenderPicker = () => {
         setGenderModalVisible(true);
-        // Set a default value if nothing is selected when opening the picker
         if (selectedGenderValue === '') {
             setSelectedGenderValue('Male');
         }
     };
 
-    // Hides the gender picker modal
     const hideGenderPicker = () => {
         setGenderModalVisible(false);
     };
 
-    // Handles gender selection from the picker
     const handleGenderChange = (itemValue) => {
         setSelectedGenderValue(itemValue);
-        // Clear or set message based on selection
         if (itemValue.trim() !== '') {
             setGenderMessage('');
         } else {
@@ -158,43 +124,35 @@ export default function RegistrationScreen() {
         }
     };
 
-    // Handles the continue button press
     const handleContinuePress = () => {
         console.log('Continue pressed');
-        // You can add navigation or further logic here
     };
 
-    // Effect to validate inputs and enable/disable the continue button
     useEffect(() => {
-        // Validate lastname and set message
         if (lastname.trim() === '') {
-            setLastnameMessage('Last Name is required.');
+            setLastnameMessage('Required');
         } else {
             setLastnameMessage('');
         }
 
-        // Validate firstname and set message
         if (firstname.trim() === '') {
-            setFirstnameMessage('First Name is required.');
+            setFirstnameMessage('Required');
         } else {
             setFirstnameMessage('');
         }
 
-        // Validate language selection and set message
         if (selectedLanguageValue.trim() === '') {
-            setLanguageMessage('Preferred Language is required.');
+            setLanguageMessage('Required');
         } else {
             setLanguageMessage('');
         }
 
-        // Validate gender selection and set message
         if (selectedGenderValue.trim() === '') {
-            setGenderMessage('Gender is required.');
+            setGenderMessage('Required');
         } else {
             setGenderMessage('');
         }
 
-        // Check if all fields have non-empty values and no error messages
         const allFieldsFilled =
             username.trim() !== '' &&
             lastname.trim() !== '' &&
@@ -203,15 +161,14 @@ export default function RegistrationScreen() {
             selectedGenderValue.trim() !== '';
 
         const noErrorMessages =
-            usernameMessage.includes('available') || // Username available is a positive message
+            usernameMessage.includes('available') ||
             (usernameMessage === '' &&
-                username.trim() !== '' && // No message and filled
+                username.trim() !== '' &&
                 lastnameMessage === '' &&
                 firstnameMessage === '' &&
                 languageMessage === '' &&
                 genderMessage === '');
 
-        // Enable button only if all fields are filled AND there are no error messages
         setIsContinueButtonDisabled(!(allFieldsFilled && noErrorMessages));
     }, [
         username,
@@ -219,56 +176,56 @@ export default function RegistrationScreen() {
         firstname,
         selectedLanguageValue,
         selectedGenderValue,
-        usernameMessage, // Include usernameMessage in dependencies to react to its changes
+        usernameMessage,
         lastnameMessage,
         firstnameMessage,
         languageMessage,
         genderMessage,
-    ]); // Re-run this effect whenever these state variables change
+    ]);
 
     return (
         <View style={styles.container}>
             <StatusBar barStyle="light-content" />
             <View style={styles.content}>
-                <View style={styles.continueContainer}>
+                <View style={styles.headerContainer}>
                     <Text style={[FONTS.titleFont, styles.title]}>
                         Hello new user! 👋
                     </Text>
-                    <Text style={[FONTS.subTitleFont, styles.title]}>
+                    <Text style={[FONTS.subTitleFont, styles.subTitle]}>
                         Would you like to tell me about yourself?
                     </Text>
                 </View>
                 <View style={styles.formContainer}>
-                    {/* Username Input */}
-                    {isDuplicateCheckInProgress ? (
-                        <Text style={[styles.messageText]}>
-                            Checking username availability...
-                        </Text>
-                    ) : (
-                        <Text
-                            style={[
-                                styles.messageText,
-                                usernameMessage.includes('taken') ||
-                                usernameMessage.includes('required') ||
-                                usernameMessage.includes('Error')
-                                    ? styles.errorMessage
-                                    : styles.successMessage,
-                            ]}
-                        >
-                            {usernameMessage}
-                        </Text>
-                    )}
-                    <TextInput
-                        style={[FONTS.inputFont, INPUTS.oneLineInput]}
-                        placeholder="User Name"
-                        placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                        value={username}
-                        onChangeText={handleUsernameChange}
-                    />
+                    <View id="user-name">
+                        {isDuplicateCheckInProgress ? (
+                            <Text style={[styles.messageText]}>
+                                Checking username availability...
+                            </Text>
+                        ) : (
+                            <Text
+                                style={[
+                                    styles.messageText,
+                                    usernameMessage.includes('taken') ||
+                                    usernameMessage.includes('required') ||
+                                    usernameMessage.includes('Error')
+                                        ? styles.errorMessage
+                                        : styles.successMessage,
+                                ]}
+                            >
+                                {usernameMessage}
+                            </Text>
+                        )}
+                        <TextInput
+                            style={[FONTS.inputFont, INPUTS.oneLineInput]}
+                            placeholder="User Name"
+                            placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                            value={username}
+                            onChangeText={handleUsernameChange}
+                        />
+                    </View>
 
-                    <View style={[VIEWS.oneLineView, { height: 20 }]}>
-                        {/* Last Name Input */}
-                        <View style={styles.leftMessage}>
+                    <View id="real-name" style={styles.inputContainer}>
+                        <View style={styles.lastNameContainer}>
                             {lastnameMessage !== '' && (
                                 <Text
                                     style={[
@@ -279,9 +236,16 @@ export default function RegistrationScreen() {
                                     {lastnameMessage}
                                 </Text>
                             )}
+                            <TextInput
+                                style={[FONTS.inputFont, INPUTS.basicInput]}
+                                placeholder="Last Name"
+                                placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                                value={lastname}
+                                onChangeText={setLastname}
+                            />
                         </View>
-                        {/* First Name Input */}
-                        <View style={styles.rightMessage}>
+
+                        <View style={styles.firstNameContainer}>
                             {firstnameMessage !== '' && (
                                 <Text
                                     style={[
@@ -292,37 +256,23 @@ export default function RegistrationScreen() {
                                     {firstnameMessage}
                                 </Text>
                             )}
+                            <TextInput
+                                style={[
+                                    FONTS.inputFont,
+                                    INPUTS.basicInput,
+                                    styles.firstNameInput,
+                                ]}
+                                placeholder="First Name"
+                                placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                                value={firstname}
+                                onChangeText={setFirstname}
+                            />
                         </View>
                     </View>
 
-                    <View style={VIEWS.oneLineView}>
-                        <TextInput
-                            style={[
-                                FONTS.inputFont,
-                                INPUTS.basicInput,
-                                styles.lastNameInput,
-                            ]}
-                            placeholder="Last Name"
-                            placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                            value={lastname}
-                            onChangeText={setLastname} // Message update handled in useEffect
-                        />
-                        <TextInput
-                            style={[
-                                FONTS.inputFont,
-                                INPUTS.basicInput,
-                                styles.firstNameInput,
-                            ]}
-                            placeholder="First Name"
-                            placeholderTextColor="rgba(255, 255, 255, 0.7)"
-                            value={firstname}
-                            onChangeText={setFirstname} // Message update handled in useEffect
-                        />
-                    </View>
-
-                    <View>
-                        <View style={[VIEWS.oneLineView, { height: 20 }]}>
-                            <View style={styles.leftMessage}>
+                    <View id="pickers" style={styles.inputContainer}>
+                        <View style={styles.languageContainer}>
+                            <View>
                                 {languageMessage !== '' && (
                                     <Text
                                         style={[
@@ -334,7 +284,21 @@ export default function RegistrationScreen() {
                                     </Text>
                                 )}
                             </View>
-                            <View style={styles.rightMessage}>
+                            <View>
+                                <Pressable
+                                    style={[BUTTONS.smallModalButton]}
+                                    onPress={showLanguagePicker}
+                                >
+                                    <Text style={[FONTS.inputFont]}>
+                                        {selectedLanguageValue !== ''
+                                            ? selectedLanguageValue
+                                            : 'Preferred Language'}
+                                    </Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                        <View style={styles.genderContainer}>
+                            <View>
                                 {genderMessage !== '' && (
                                     <Text
                                         style={[
@@ -346,71 +310,8 @@ export default function RegistrationScreen() {
                                     </Text>
                                 )}
                             </View>
-                        </View>
-                        <View style={VIEWS.oneLineView}>
-                            {/* Preferred Language Picker */}
-                            <View
-                                id="languagePicker"
-                                style={styles.languagePicker}
-                            >
-                                <Pressable
-                                    style={[BUTTONS.smallModalButton]}
-                                    onPress={showLanguagePicker}
-                                >
-                                    <Text style={[FONTS.inputFont]}>
-                                        {selectedLanguageValue !== ''
-                                            ? selectedLanguageValue
-                                            : 'Preferred Language'}
-                                    </Text>
-                                </Pressable>
-                                <Modal
-                                    animationType="slide"
-                                    transparent={true}
-                                    visible={languageModalVisible}
-                                    onRequestClose={hideLanguagePicker}
-                                >
-                                    <Pressable
-                                        style={styles.centeredView}
-                                        onPress={hideLanguagePicker}
-                                    >
-                                        <Pressable
-                                            style={styles.modalView}
-                                            onPress={(e) => e.stopPropagation()}
-                                        >
-                                            <Picker
-                                                selectedValue={
-                                                    selectedLanguageValue
-                                                }
-                                                onValueChange={
-                                                    handleLanguageChange
-                                                }
-                                                style={styles.picker}
-                                                itemStyle={
-                                                    Platform.OS === 'ios'
-                                                        ? styles.pickerItem
-                                                        : null
-                                                }
-                                            >
-                                                <Picker.Item
-                                                    label="Korean"
-                                                    value="Korean"
-                                                />
-                                                <Picker.Item
-                                                    label="Swedish"
-                                                    value="Swedish"
-                                                />
-                                                <Picker.Item
-                                                    label="English"
-                                                    value="English"
-                                                />
-                                            </Picker>
-                                        </Pressable>
-                                    </Pressable>
-                                </Modal>
-                            </View>
 
-                            {/* Gender Picker */}
-                            <View id="genderPicker" style={styles.genderPicker}>
+                            <View>
                                 <Pressable
                                     style={[BUTTONS.smallModalButton]}
                                     onPress={showGenderPicker}
@@ -421,50 +322,6 @@ export default function RegistrationScreen() {
                                             : 'Gender'}
                                     </Text>
                                 </Pressable>
-                                <Modal
-                                    animationType="slide"
-                                    transparent={true}
-                                    visible={genderModalVisible}
-                                    onRequestClose={hideGenderPicker}
-                                >
-                                    <Pressable
-                                        style={styles.centeredView}
-                                        onPress={hideGenderPicker}
-                                    >
-                                        <Pressable
-                                            style={styles.modalView}
-                                            onPress={(e) => e.stopPropagation()}
-                                        >
-                                            <Picker
-                                                selectedValue={
-                                                    selectedGenderValue
-                                                }
-                                                onValueChange={
-                                                    handleGenderChange
-                                                }
-                                                style={styles.picker}
-                                                itemStyle={
-                                                    Platform.OS === 'ios'
-                                                        ? styles.pickerItem
-                                                        : null
-                                                }
-                                            >
-                                                <Picker.Item
-                                                    label="Male"
-                                                    value="Male"
-                                                />
-                                                <Picker.Item
-                                                    label="Female"
-                                                    value="Female"
-                                                />
-                                                <Picker.Item
-                                                    label="Non-binary"
-                                                    value="Non-binary"
-                                                />
-                                            </Picker>
-                                        </Pressable>
-                                    </Pressable>
-                                </Modal>
                             </View>
                         </View>
                     </View>
@@ -484,6 +341,69 @@ export default function RegistrationScreen() {
                     </Pressable>
                 </View>
             </View>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={languageModalVisible}
+                onRequestClose={hideLanguagePicker}
+            >
+                <Pressable
+                    style={styles.centeredView}
+                    onPress={hideLanguagePicker}
+                >
+                    <Pressable
+                        style={styles.modalView}
+                        onPress={(e) => e.stopPropagation()}
+                    >
+                        <Picker
+                            selectedValue={selectedLanguageValue}
+                            onValueChange={handleLanguageChange}
+                            style={styles.picker}
+                            itemStyle={
+                                Platform.OS === 'ios' ? styles.pickerItem : {}
+                            }
+                        >
+                            <Picker.Item label="Korean" value="Korean" />
+                            <Picker.Item label="Swedish" value="Swedish" />
+                            <Picker.Item label="English" value="English" />
+                        </Picker>
+                    </Pressable>
+                </Pressable>
+            </Modal>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={genderModalVisible}
+                onRequestClose={hideGenderPicker}
+            >
+                <Pressable
+                    style={styles.centeredView}
+                    onPress={hideGenderPicker}
+                >
+                    <Pressable
+                        style={styles.modalView}
+                        onPress={(e) => e.stopPropagation()}
+                    >
+                        <Picker
+                            selectedValue={selectedGenderValue}
+                            onValueChange={handleGenderChange}
+                            style={styles.picker}
+                            itemStyle={
+                                Platform.OS === 'ios' ? styles.pickerItem : {}
+                            }
+                        >
+                            <Picker.Item label="Male" value="Male" />
+                            <Picker.Item label="Female" value="Female" />
+                            <Picker.Item
+                                label="Non-binary"
+                                value="Non-binary"
+                            />
+                        </Picker>
+                    </Pressable>
+                </Pressable>
+            </Modal>
         </View>
     );
 }
@@ -493,40 +413,91 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
     },
+    content: {
+        flex: 1,
+        paddingTop: height * 0.15,
+        paddingBottom: height * 0.1,
+        paddingHorizontal: 20,
+    },
+    headerContainer: {
+        alignItems: 'center',
+        marginBottom: height * 0.05,
+    },
+    title: {
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    subTitle: {
+        textAlign: 'center',
+    },
     formContainer: {
-        flex: 1.5,
+        flex: 1,
+        justifyContent: 'flex-start',
+        gap: height * 0.03,
+    },
+    inputContainer: {
+        marginBottom: height * 0.02,
+        flexDirection: 'row',
+    },
+    inlineMessageContainer: {
+        flexDirection: 'row',
         justifyContent: 'space-between',
+        marginBottom: 4,
+    },
+    messageText: {
+        fontSize: 12,
+        alignSelf: 'flex-start',
+        marginLeft: 8,
+        marginBottom: 5,
+    },
+    errorMessage: {
+        color: '#FF6347',
+    },
+    successMessage: {
+        color: '#32CD32',
+    },
+    lastNameInput: {
+        flex: 1,
+        marginRight: 10,
+    },
+    firstNameInput: {
+        flex: 2,
+    },
+    lastNameContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        marginRight: 10,
+    },
+    firstNameContainer: {
+        flex: 2,
+        flexDirection: 'column',
+    },
+    languageContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        marginRight: 10,
+    },
+    genderContainer: {
+        flex: 1,
+        flexDirection: 'column',
+    },
+    leftMessage: {
+        flex: 1,
+        alignItems: 'flex-start',
+    },
+    rightMessage: {
+        flex: 1,
+        alignItems: 'flex-start',
+    },
+    pickerWrapper: {
+        flex: 1,
     },
     continueContainer: {
+        justifyContent: 'flex-end',
         flex: 1,
     },
     continueButton: {
         marginTop: marginHeight,
-    },
-
-    content: {
-        flex: 1,
-        justifyContent: 'space-between',
-        paddingTop: 150,
-        paddingBottom: 150,
-        paddingHorizontal: 20,
-    },
-    title: {
-        textAlign: 'center',
-        marginTop: 0,
-        marginBottom: 0,
-    },
-    line: {
-        flexDirection: 'row',
-        padding: 10,
-        paddingVertical: 10,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        alignContent: 'center',
-        width: '100%',
-    },
-    emailInput: {
-        marginRight: 20,
     },
     centeredView: {
         flex: 1,
@@ -556,35 +527,5 @@ const styles = StyleSheet.create({
     },
     pickerItem: {
         fontSize: 16,
-    },
-    messageText: {
-        fontSize: 12,
-        marginBottom: 4,
-        alignSelf: 'flex-start',
-        marginLeft: 8, // Align with input padding
-    },
-    lastNameInput: {
-        flex: 1,
-    },
-    firstNameInput: {
-        flex: 2,
-    },
-    leftMessage: {
-        flex: 1,
-    },
-    rightMessage: {
-        // flex: 1,
-    },
-    languagePicker: {
-        flex: 1,
-    },
-    genderPicker: {
-        flex: 1,
-    },
-    errorMessage: {
-        color: '#FF6347', // Tomato red for errors
-    },
-    successMessage: {
-        color: '#32CD32', // Lime green for success
     },
 });
