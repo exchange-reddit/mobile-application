@@ -226,7 +226,7 @@ export default function RegistrationScreen() {
 
                     <View id="real-name" style={styles.inputContainer}>
                         <View style={styles.lastNameContainer}>
-                            {lastnameMessage !== '' && (
+                            {lastnameMessage !== '' ? (
                                 <Text
                                     style={[
                                         styles.messageText,
@@ -235,6 +235,13 @@ export default function RegistrationScreen() {
                                 >
                                     {lastnameMessage}
                                 </Text>
+                            ) : (
+                                <Text
+                                    style={[
+                                        styles.messageText,
+                                        styles.errorMessage,
+                                    ]}
+                                ></Text>
                             )}
                             <TextInput
                                 style={[FONTS.inputFont, INPUTS.basicInput]}
@@ -246,7 +253,7 @@ export default function RegistrationScreen() {
                         </View>
 
                         <View style={styles.firstNameContainer}>
-                            {firstnameMessage !== '' && (
+                            {firstnameMessage !== '' ? (
                                 <Text
                                     style={[
                                         styles.messageText,
@@ -254,6 +261,15 @@ export default function RegistrationScreen() {
                                     ]}
                                 >
                                     {firstnameMessage}
+                                </Text>
+                            ) : (
+                                <Text
+                                    style={[
+                                        styles.messageText,
+                                        styles.errorMessage,
+                                    ]}
+                                >
+                                    {lastnameMessage}
                                 </Text>
                             )}
                             <TextInput
@@ -273,7 +289,7 @@ export default function RegistrationScreen() {
                     <View id="pickers" style={styles.inputContainer}>
                         <View style={styles.languageContainer}>
                             <View>
-                                {languageMessage !== '' && (
+                                {languageMessage !== '' ? (
                                     <Text
                                         style={[
                                             styles.messageText,
@@ -281,6 +297,15 @@ export default function RegistrationScreen() {
                                         ]}
                                     >
                                         {languageMessage}
+                                    </Text>
+                                ) : (
+                                    <Text
+                                        style={[
+                                            styles.messageText,
+                                            styles.errorMessage,
+                                        ]}
+                                    >
+                                        {lastnameMessage}
                                     </Text>
                                 )}
                             </View>
@@ -299,7 +324,7 @@ export default function RegistrationScreen() {
                         </View>
                         <View style={styles.genderContainer}>
                             <View>
-                                {genderMessage !== '' && (
+                                {genderMessage !== '' ? (
                                     <Text
                                         style={[
                                             styles.messageText,
@@ -307,6 +332,15 @@ export default function RegistrationScreen() {
                                         ]}
                                     >
                                         {genderMessage}
+                                    </Text>
+                                ) : (
+                                    <Text
+                                        style={[
+                                            styles.messageText,
+                                            styles.errorMessage,
+                                        ]}
+                                    >
+                                        {lastnameMessage}
                                     </Text>
                                 )}
                             </View>
