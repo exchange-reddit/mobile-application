@@ -17,6 +17,7 @@ import {
 
 //5 July 도현님 제가 해냈어요(기존 위치에서 원 반짝이고 없어지는 애니메이션)
 // 👍👍👍👍👍
+// asdf
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');

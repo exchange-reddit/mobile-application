@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
+    Dimensions,
     Platform,
     SafeAreaView,
     StatusBar,
@@ -26,6 +27,9 @@ import {
 import { useRegistrationStore } from '@/libs/registration/registrationStore';
 
 // --- Constants ---
+const { height } = Dimensions.get('window');
+const marginHeight = height * 1;
+
 const CELL_COUNT = 5;
 const VERIFICATION_TYPE_UNI_EMAIL = 1;
 
@@ -521,28 +525,30 @@ export default function VerificationScreen() {
                         {passwordMessage}
                     </Text>
                 ) : null}
-
-                {/* Continue Button */}
-                <TouchableOpacity
-                    style={[BUTTONS.bigButton]}
-                    onPress={handleContinue}
-                    // Disable if any API call is in progress or if verification/password conditions are not met
-                    disabled={
-                        overallLoading ||
-                        !isHomeUniCodeVerified ||
-                        !isExchangeUniCodeVerified ||
-                        !isPasswordValid ||
-                        !arePasswordsMatching
-                    }
-                >
-                    <Text style={[FONTS.bigButtonFont]}>Continue</Text>
-                </TouchableOpacity>
             </View>
+            {/* Continue Button */}
+            <TouchableOpacity
+                style={[BUTTONS.bigButton, styles.continueButton]}
+                onPress={handleContinue}
+                // Disable if any API call is in progress or if verification/password conditions are not met
+                disabled={
+                    overallLoading ||
+                    !isHomeUniCodeVerified ||
+                    !isExchangeUniCodeVerified ||
+                    !isPasswordValid ||
+                    !arePasswordsMatching
+                }
+            >
+                <Text style={[FONTS.bigButtonFont]}>Continue</Text>
+            </TouchableOpacity>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    continueButton: {
+        marginTop: 10,
+    },
     bottomSection: {
         marginTop: 'auto',
     },
